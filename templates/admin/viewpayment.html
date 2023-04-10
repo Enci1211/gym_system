@@ -1,0 +1,64 @@
+{% extends "admin/admin.html" %} 
+{% block title %}
+Viewpayment
+{% endblock%}
+{% block content %}
+
+<section class="home">
+  <div class="vp">
+    <div class="content">
+      {% if processed %}
+      <h2>All the payments have been processed!</h2>
+      {% else %}
+      <form action="{{url_for('viewpayment')}}" method="POST">
+        <h2>{{process_one}}</h2>
+        <h2>payment list that had not been processed:</h2>
+        <table class="table table-bordered  table-striped table-hover table align-middle">
+          <thead class="table-dark align-middle" method="POST">
+            <tr>
+              <th scope="col">payment id</th>
+              <th scope="col">member id</th>
+              <th scope="col">amount</th>
+              <th scope="col">date</th>
+              <th scope="col">time</th>
+              <th scope="col">type</th>
+              <th scope="col">status</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for a in payment %}
+            <tr>
+              <td>{{a[0]}}</td>
+              <td>{{a[1]}}</td>
+              <td>{{a[2]}}</td>
+              <td>{{a[3]}}</td>
+              <td>{{a[4]}}</td>
+              <td>{{a[5]}}</td>
+              <td>{{a[6]}}</td>
+              <td>
+                <button>
+                  <a
+                    href="/admin/viewpayment/process/?userid={{a[1]}}&paymentid={{a[0]}}" class="btn btn-dark btn-lg"
+                  >
+                    process</a
+                  >
+                </button>
+      </td>
+    </tr>
+    {% endfor %}
+          </tbody>
+      </table>
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-warning btn-lg btn-block">
+        Process All Payment <br/>
+        <p>Change all the 'pending' to 'paid'</p>
+        </button>
+      </div>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

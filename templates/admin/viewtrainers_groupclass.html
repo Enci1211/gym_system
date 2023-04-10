@@ -1,0 +1,35 @@
+{% extends "admin/admin.html" %} {% block title %} Trainer's class page {%
+endblock%} {% block content %}
+
+<h2 class="heading-2">all the group classes under this Instructor</h2>
+
+<h2 class="heading-2">from {{today}} to {{seven_days_later}}</h2>
+<table class="primary_table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th scope="col">class name</th>
+      <th scope="col">date</th>
+      <th scope="col">time</th>
+      <th scope="col">booked spots</th>
+      <th scope="col">max spots</th>
+      <th scope="col">ID</th>
+      <th scope="col">Instructor</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for a in dbOutput %}
+    <tr>
+      <td>{{a[0]}}</td>
+      <td>{{a[1]}}</td>
+      <td>{{a[2]}}</td>
+      <td>{{a[3]}}</td>
+      <td>{{a[4]}}</td>
+      <td>{{a[5]}}</td>
+      <td>{{a[6]}} {{a[7]}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

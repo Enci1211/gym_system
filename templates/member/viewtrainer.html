@@ -1,0 +1,39 @@
+{% extends "member/member.html" %} {% block title %}book a session {% endblock%}
+{%block content %}
+
+<h1 class="heading-1">Trainer List</h1>
+
+<table class="primary_table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Full name</th>
+      <th scope="col">email</th>
+      <th scope="col">phone</th>
+      <th scope="col">address</th>
+      <th scope="col">date of birth</th>
+      <th scope="col">specialities</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for a in trainername %}
+    <tr>
+      <td>{{a[2]}} {{a[3]}}</td>
+      <td>{{a[4]}}</td>
+      <td>{{a[5]}}</td>
+      <td>{{a[6]}}</td>
+      <td>{{a[7]}}</td>
+      <td>{{a[8]}}</td>
+      <td>
+        <a
+          href="/member/viewtrainer/session/?userid={{userid}}&traineruserid={{a[1]}}"
+          class="btn-2 member_view_trainer_btn"
+          >View session</a
+        >
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

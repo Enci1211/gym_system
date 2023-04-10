@@ -1,0 +1,24 @@
+{% extends "member/member.html" %} {% block title %} book a session {%
+endblock%} {%block content %}
+
+<h1 class="heading-1">congratuations!</h1>
+<p>
+  you have a trainer session with {{ staff_full_name}} on {{ session_date }}, {{
+  session_time }}, see you soon!
+</p>
+
+<a
+  href="/member/viewtrainer/?userid={{userid}}"
+  type="button"
+  class="btn-2 member_view_trainer_btn"
+  >Book another session</a
+>
+
+<a
+  href="/member/?userid={{userid}}"
+  type="button"
+  class="btn-2 member_view_trainer_btn"
+  >Back</a
+>
+
+{% endblock %}

@@ -1,0 +1,319 @@
+.login_container {
+  background-image: linear-gradient(rgba(128, 128, 128, 0.7), rgba(128, 128, 128, 0.7)), url(../static/img/main.jpg);
+  background-size: cover;
+  background-position: center;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.login_input {
+  display: block;
+  padding: 1rem 3rem;
+  margin-bottom: 2rem;
+  border: none;
+}
+.login_btn {
+  display: block;
+  margin: 0 auto;
+}
+
+.login_input {
+  border-radius: 5px;
+  outline: none;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Nunito", sans-serif;
+  padding: 0 3rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+    box-shadow: none;
+  }
+  50% {
+    transform: scale(1.3);
+    box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: none;
+  }
+}
+.container {
+  background-color: #fff;
+  height: 100vh;
+  width: 100%;
+  padding: 0;
+}
+
+.header {
+  width: 100%;
+  background-color: #e3dbdb;
+  height: 5rem;
+}
+.header .navbar {
+  height: 100%;
+  width: 100%;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+.header .navbar_link {
+  display: inline-block;
+  height: 100%;
+  color: #4e3d42;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-size: 1.5rem;
+}
+.header .navbar_link:hover {
+  background-color: #9f9f92;
+  border-radius: 2px;
+  font-size: 2rem;
+}
+
+.footer {
+  height: 5rem;
+  background-color: #e3dbdb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.message_1 {
+  color: #6d6466;
+  font-weight: 400;
+}
+
+.message_2 {
+  color: #c9d5b5;
+  font-weight: 200;
+  font-size: 1.5rem;
+}
+
+.heading-1 {
+  color: #4e3d42;
+  font-weight: 200;
+}
+
+.btn {
+  display: block;
+  background-color: #c9d5b5;
+  font-size: 1rem;
+  width: -moz-max-content;
+  width: max-content;
+  transition: all 0.5s;
+}
+.btn:hover {
+  text-decoration: none;
+  transform: translateY(-3px);
+}
+
+.btn-2 {
+  display: inline-block;
+  text-decoration: none;
+  outline: transparent;
+  text-align: center;
+  background-color: #e3dbdb;
+  color: #4e3d42;
+  text-transform: uppercase;
+  font-size: 2rem;
+  font-weight: 200;
+  padding: 1rem 5rem;
+  border-radius: 100px;
+  transition: all 0.2s;
+}
+.btn-2:hover {
+  text-decoration: none;
+  color: #4e3d42;
+  outline: transparent;
+  transform: translateY(-5px);
+}
+
+.btn-3 {
+  display: block;
+  background-color: transparent;
+  font-size: 1rem;
+  color: #4e3d42;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  width: -moz-max-content;
+  width: max-content;
+  margin: 0 auto;
+}
+.btn-3:hover {
+  text-decoration: none;
+  color: #4e3d42;
+}
+
+.btn-box {
+  display: flex;
+  justify-content: center;
+}
+
+.member_container {
+  background-color: #c9d5b5;
+  height: calc(100vh - 10rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content_container {
+  padding: 3rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.group_class_container,
+.tranier_session_container {
+  text-align: center;
+}
+
+.class_table {
+  width: 90%;
+  font-size: 2px;
+  text-align: center;
+  padding: 1rem 0;
+  border-collapse: collapse;
+  color: #6d6466;
+  font-weight: 200;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.class_head {
+  background-color: #9f9f92;
+  color: #4e3d42;
+  padding: 2rem;
+}
+
+.class_btn {
+  max-width: 10rem;
+  border-radius: 5px;
+}
+.class_btn:hover {
+  outline: none;
+  animation: pulsate 0.5s infinite;
+}
+
+.class_btn_full {
+  max-width: 10rem;
+  border-radius: 5px;
+  transition: all 0.5s;
+}
+.class_btn_full:hover {
+  background-color: #9f9f92;
+}
+
+.table_head {
+  background-color: #c9d5b5;
+}
+
+.primary_table {
+  border-collapse: collapse;
+  color: #6d6466;
+  font-weight: 200;
+  border-radius: 1rem;
+  overflow: hidden;
+  margin: 3rem;
+}
+
+td {
+  padding: 1.5rem;
+}
+td input {
+  border: none;
+  background-color: transparent;
+  outline: none;
+}
+td input::-moz-placeholder {
+  color: #6d6466;
+  font-size: 2rem;
+  font-weight: 200;
+}
+td input::placeholder {
+  color: #6d6466;
+  font-size: 2rem;
+  font-weight: 200;
+}
+
+td:first-child {
+  font-weight: 400;
+}
+
+.member_view_trainer_btn {
+  font-size: 1rem;
+  display: inline-block;
+}
+
+.pay_page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  color: #6d6466;
+  width: 35rem;
+  padding: 5rem 0;
+  margin: 0 auto;
+  background-color: transparent;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.pay_page input {
+  outline: none;
+}
+
+.yoga {
+  font-weight: 400;
+  background-color: coral;
+}
+
+.pilates {
+  font-weight: 400;
+  background-color: gold;
+}
+
+.zumba {
+  font-weight: 400;
+  background-color: goldenrod;
+}
+
+.spinning {
+  font-weight: 400;
+  background-color: rgb(234, 143, 109);
+}
+
+.kickboxing {
+  font-weight: 400;
+  background-color: bisque;
+}/*# sourceMappingURL=main.css.map */

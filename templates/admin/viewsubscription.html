@@ -1,0 +1,50 @@
+{% extends "admin/admin.html" %} {% block title %}Administrative system for
+staff {% endblock%} {% block content %}
+
+<section class="home">
+  <div class="pc">
+    <div class="content">
+      {% if updated %} {% endif %}
+
+      <h2>member with balance under $0:</h2>
+
+      <table
+        class="table table-bordered table-striped table-hover table align-middle"
+      >
+        <thead class="table-dark align-middle" method="POST">
+          <tr>
+            <th scope="col">Member ID</th>
+            <th scope="col">Full name</th>
+            <th scope="col">Subscription Status</th>
+            <th scope="col">Subscription End Date</th>
+            <th scope="col">Balance</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for a in mbersub_status %}
+          <tr>
+            <td>{{a[0]}}</td>
+            <td>{{a[1]}} {{a[2]}}</td>
+            <td>
+              {% if a[3] == 1 %}
+              <span class="badge bg-success"> Active </span>
+              {% else %}
+              <span class="badge bg-warning"> Inactive </span>
+              {% endif %}
+            </td>
+            <td>{{a[5]}}</td>
+            <td>{{a[6]}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a
+        href="/admin/feenotification/?userid={{admin_userid}}"
+        class="btn btn-warning btn-lg btn-block"
+        >Remind members to pay</a
+      >
+    </div>
+  </div>
+</section>
+{% endblock %}

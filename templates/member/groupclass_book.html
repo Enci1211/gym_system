@@ -1,0 +1,24 @@
+{% extends "member/member.html" %} {% block title %} Groupclass booking {%
+endblock%} {% block content %}
+
+<input type="hidden" value="{{userid}}" name="userid" id="userid" />
+{% if full %}
+<h2>this class is fully booked, please try another one...</h2>
+{% else %} {% if dbOutput6[0][0] %} {% if dbOutput5 %}
+
+<h2>you have already booked this class, please try another one!</h2>
+{% else %}
+<h1>congratulations!</h1>
+<h2>
+  you have booked a {{class_name}} on {{date}} , {{time}} ! Tutor {{first_name}}
+  {{last_name}} will be there waiting for you !
+</h2>
+
+{% endif %} {% else %}
+<h2>{{inactive}}</h2>
+<a
+  href="/member/paysubscription/?userid={{userid}}"
+  class="btn btn-warning btn-lg"
+  >pay for your balance</a
+>
+{% endif %} {%endif%} {% endblock %}

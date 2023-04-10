@@ -1,0 +1,25 @@
+{% extends "admin/admin.html" %} {% block title %} Trainer Management
+{%endblock%} {% block header %}
+<body>
+  <header class="header">
+    <a href="/trainer/?userid={{userid}}" class="logo"
+      ><span>LINCOLN</span>FIT</a
+    >
+    <div id="menu-btn" class="fas fa-bars"></div>
+    <nav class="navbar">
+      <a href="/trainer/profile/?userid={{userid}}">View profile</a>
+      <a href="/trainer/trainee/?userid={{userid}}">View trainee</a>
+      <a href="/">Log out</a>
+    </nav>
+  </header>
+  {% endblock %} {% block content %}
+  <section class="home" id="home">
+    <div class="pt">
+      <div class="content">
+        <span>BE PROFESSIONAL, LINCOLN FIT</span>
+        <h2>Welcome Trainer.</h2>
+      </div>
+    </div>
+  </section>
+  {% endblock %}
+</body>

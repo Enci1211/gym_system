@@ -1,0 +1,18 @@
+{% extends "member/member.html" %} {% block title %}member's home page {%
+endblock%} {% block content %}
+<p>you have cancelled this booking!</p>
+<a
+  href="/member/booking/?userid={{userid}}"
+  type="button"
+  class="btn-2 member_view_trainer_btn"
+  >Back to booking</a
+>
+
+<a
+  href="/member/?userid={{userid}}"
+  type="button"
+  class="btn-2 member_view_trainer_btn"
+  >Back to member's home page</a
+>
+
+{%endblock%}

@@ -1,0 +1,36 @@
+{% extends "member/member.html" %} {% block title %}book a session {% endblock%}
+{% block content %} {% if session %}
+<table class="primary_table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th scope="col">session id</th>
+      <th scope="col">date</th>
+      <th scope="col">time</th>
+      <th scope="col">fee</th>
+      <th scope="col">status</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for a in session %}
+    <tr>
+      <td>{{a[0]}}</td>
+      <td>{{a[1]}}</td>
+      <td>{{a[2]}}</td>
+      <td>{{a[3]}}</td>
+      <td>{{a[4]}}</td>
+      <td>
+        <a
+          href="/member/viewtrainer/session/book/?userid={{userid}}&traineruserid={{trainerUserid}}&sessionid={{a[0]}}"
+          class="btn-2 member_view_trainer_btn"
+          >book this session</a
+        >
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<h2>sorry! this trainer is not available, please try another trainer</h2>
+{% endif %} {% endblock %}

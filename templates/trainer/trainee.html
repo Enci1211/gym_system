@@ -1,0 +1,39 @@
+{% extends "trainer/trainer.html" %} 
+{% block title %}
+Trainee profile
+{%endblock%} 
+
+{% block content %}
+
+<section class="home">
+    <div class="tp">
+        <div class="content">
+          <h2>Trainee who booked your session</h2>
+          <table class="table table-bordered  table-striped table-hover table align-middle">
+          <thead class="table-dark align-middle">
+            <tr>
+            <th>SessionsID</th>
+            <th>Tainee Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Date</th>
+            <th>Time</th>
+            </tr>
+          </thead>
+    <tbody>
+    {% for item in member %}
+      <tr>
+        <td>{{ item[0] }}</td>
+        <td>{{ item[1]  }}</td>
+        <td>{{ item[2]  }}</td>
+        <td>{{ item[3] }}</td>
+        <td>{{ item[4] }}</td>
+        <td>{{ item[5] }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+          </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,50 @@
+
+{% extends "trainer/trainer.html" %} 
+{% block title %} 
+Update trainer's profile {%
+endblock%} 
+
+{% block content %}
+<section class="home">
+  <div class="tp">
+      <div class="content">
+     <h1>{{ success_edit }}</h1>
+      <h2>
+  please update the profile for user {{ userid }} : {{first_name}} {{last_name}}
+  by filling this form
+</h2>
+      <form action="{{url_for('trainerprofile_update')}}" method="POST">
+  <div class="form-row">
+
+    <!---------pass trainerid----->
+
+    <input type="hidden" value="{{userid}}" id="userid" name="userid" />
+
+
+    <div class="col-md-6">
+      <label for="email" class="form-label">Email</label>
+      <input name="email" class="form-control" value={{email}} required>
+    </div>
+    
+    <div class="col-md-6">
+        <label for="phone" class="form-label">number</label>
+        <input name="phone" class="form-control" value={{phone}} required>
+      </div>
+  
+    <div class="col-md-5">
+        <label for="address" class="form-label">address</label>
+        <input name="address" class="form-control" value="{{address}}" required>
+    </div>
+  
+    <div class="col-md-5">
+      <label for="specialties" class="form-label">specialties</label>
+      <input name="specialties" class="form-control" value="{{specialties}}" required>
+  
+    <br>
+    <input type="submit" class="btn btn-primary btn-lg"/>
+    <a href="/trainer/profile/?userid={{userid}} " type="button" class="btn btn-dark btn-lg">Back</a>
+        </form>
+    </div>
+        </div>
+  </section>
+  {% endblock %}

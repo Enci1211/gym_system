@@ -1,0 +1,114 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}sweat society fitness{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    
+    <link rel="stylesheet" href="/static/main.css" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+      integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    {% block header %}
+    <header class="header" >
+      
+     
+      <nav class="navbar">
+        <a href="{{ url_for('admin', userid=userid) }}" class="navbar_link">Home</a>
+         <!-- dropdown menu for member-->
+         <div class="dropdown">
+          <a class="dropdown-toggle navbar_link" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            All Members
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li><a class="dropdown-item navbar_link" href="/admin/memberprofile/?userid={{admin_userid}}">View&Update</a></li>
+              <li><a class="dropdown-item navbar_link" href="/admin/addmember/?userid={{admin_userid}}">Add Member</a></li>
+              <li><a class="dropdown-item navbar_link" href="/admin/subscription/?userid={{admin_userid}}">Overdue member</a></li>
+              <li><a class="dropdown-item navbar_link" href="/admin/sendnews/?userid={{admin_userid}}">Send News</a></li>
+              </ul>
+          </div>
+          
+           <!-- dropdown menu for class and session-->
+          <div class="dropdown">
+          <a class="dropdown-toggle navbar_link" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          Trainer&Class
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li><a class="dropdown-item navbar_link" href="/admin/popularclass/?userid={{admin_userid}}">Popular Class</a></li>
+          <li><a class="dropdown-item navbar_link" href="/admin/viewtrainers/?userid={{admin_userid}}">Trainer List</a></li>
+          </ul>
+          </div>
+    
+          <!-- dropdown menu for financial report -->
+          <div class="dropdown">
+          <a class="dropdown-toggle navbar_link" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            Financial Report
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li><a class="dropdown-item navbar_link" href="/admin/financialreport/year/?userid={{admin_userid}}">Yearly</a></li>
+          <li><a class="dropdown-item navbar_link" href="/admin/financialreport/month/?userid={{admin_userid}}">Monthly</a></li>
+          </ul>
+          </div>
+    
+           <!-- dropdown menu for process payment-->
+          <div class="dropdown">
+          <a class="dropdown-toggle navbar_link" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            Payment
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li><a class="dropdown-item navbar_link" href="/admin/viewpayment/?userid={{admin_userid}}">Process pending</a></li>
+            <li><a class="dropdown-item navbar_link" href="/admin/deduct/?userid={{admin_userid}}">Deduct Subscription Fee</a></li>
+            </ul>
+          </div>
+    
+          <a href="/" class="navbar_link">Log out</a>
+      
+    
+      </nav>
+      </header>
+    {% endblock %}
+     
+
+      <section class="member_container">
+        {% block content %}
+        <h2 class="message_1">Welcome, admin</h2>
+        {% endblock %}
+      </section>
+
+      <footer class="footer">
+        <address>
+          Contact details: 123 street, lincoln gym &bull;
+          lincolngym@christchurch.co.nz &bull; ph. 03 555 1234
+        </address>
+      </footer>
+    </div>
+  </body>
+</html>

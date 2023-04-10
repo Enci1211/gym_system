@@ -1,0 +1,134 @@
+{% extends "member/member.html" %} {% block title %}groupclass {% endblock%} {%
+block content %}
+
+<h2 class="heading-1">Group Classes:</h2>
+
+<table class="class_table table-bordered table-striped table-hover">
+  <thead class="table_head">
+    <tr>
+      <th>Time</th>
+      <th>{{today}} <br />{{today_week}}</th>
+      <th>{{tomorrow}} <br />{{tomorrow_week}}</th>
+      <th>{{after_2_days}} <br />{{after_2_days_week}}</th>
+      <th>{{after_3_days}} <br />{{after_3_days_week}}</th>
+      <th>{{after_4_days}} <br />{{after_4_days_week}}</th>
+      <th>{{after_5_days}} <br />{{after_5_days_week}}</th>
+      <th>{{after_6_days}} <br />{{after_6_days_week}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-------------------9:00:00-->
+
+    <tr>
+      <td><p>09:00:00</p></td>
+      {% for a in class_9am %}
+
+      <td>
+        <div
+          class="{% if a[4] == 30 %}class_btn_full{% else %}class_btn{%endif%} {% if a[0] == 'Yoga' %} yoga {% elif a[0] == 'Pilates' %} Pilates {% elif a[0] == 'Zumba' %} zumba {% elif a[0] == 'Spinning' %} spinning {% elif a[0] == 'Kickboxing' %} kickboxing {% endif %}"
+        >
+          {{ a[0] }}
+          <br />{{a[1]}} <br />
+          <a
+            href="/member/groupclass/book/?userid={{userid}}&classid={{a[2]}}"
+            type="button"
+            class="btn-3"
+            >Book</a
+          >
+        </div>
+      </td>
+
+      {% endfor%}
+    </tr>
+
+    <!-------------------10:00:00-->
+    <tr>
+      <td><p>10:00:00</p></td>
+      {% for a in class_10am %}
+
+      <td>
+        <div
+          class="{% if a[4] == 30 %}class_btn_full{% else %}class_btn{%endif%} {% if a[0] == 'Yoga' %} yoga {% elif a[0] == 'Pilates' %} Pilates {% elif a[0] == 'Zumba' %} zumba {% elif a[0] == 'Spinning' %} spinning {% elif a[0] == 'Kickboxing' %} kickboxing {% endif %}"
+        >
+          {{a[0]}} <br />{{a[1]}} <br />
+          <a
+            href="/member/groupclass/book/?userid={{userid}}&classid={{a[2]}}"
+            type="button"
+            class="btn-3"
+            >book</a
+          >
+        </div>
+      </td>
+
+      {% endfor%}
+    </tr>
+
+    <!-------------------11:00:00-->
+    <tr>
+      <td><p>11:00:00</p></td>
+      {% for a in class_11am %}
+
+      <td>
+        <div
+          class="{% if a[4] == 30 %}class_btn_full{% else %}class_btn{%endif%} {% if a[0] == 'Yoga' %} yoga {% elif a[0] == 'Pilates' %} Pilates {% elif a[0] == 'Zumba' %} zumba {% elif a[0] == 'Spinning' %} spinning {% elif a[0] == 'Kickboxing' %} kickboxing {% endif %}"
+        >
+          {{a[0]}} <br />{{a[1]}} <br />
+          <a
+            href="/member/groupclass/book/?userid={{userid}}&classid={{a[2]}}"
+            type="button"
+            class="btn-3"
+            >book</a
+          >
+        </div>
+      </td>
+
+      {% endfor%}
+    </tr>
+    <!-------------------12:00:00-->
+    <tr>
+      <td><p>12:00:00</p></td>
+      {% for a in class_12pm %}
+
+      <td>
+        <div
+          class="{% if a[4] == 30 %}class_btn_full{% else %}class_btn{%endif%} {% if a[0] == 'Yoga' %} yoga {% elif a[0] == 'Pilates' %} Pilates {% elif a[0] == 'Zumba' %} zumba {% elif a[0] == 'Spinning' %} spinning {% elif a[0] == 'Kickboxing' %} kickboxing {% endif %}"
+        >
+          {{a[0]}} <br />{{a[1]}} <br />
+          <a
+            href="/member/groupclass/book/?userid={{userid}}&classid={{a[2]}}"
+            type="button"
+            class="btn-3"
+          >
+            book</a
+          >
+        </div>
+      </td>
+
+      {% endfor%}
+    </tr>
+    <!-------------------13:00:00-->
+    <tr>
+      <td><p>13:00:00</p></td>
+      {% for a in class_13pm %}
+
+      <td>
+        <div
+          class="{% if a[4] == 30 %}class_btn_full{% else %}class_btn{%endif%} {% if a[0] == 'Yoga' %} yoga {% elif a[0] == 'Pilates' %} Pilates {% elif a[0] == 'Zumba' %} zumba {% elif a[0] == 'Spinning' %} spinning {% elif a[0] == 'Kickboxing' %} kickboxing {% endif %}"
+        >
+          {{a[0]}} <br />{{a[1]}} <br />
+          <a
+            href="/member/groupclass/book/?userid={{userid}}&classid={{a[2]}}"
+            type="button"
+            class="btn-3"
+          >
+            book</a
+          >
+        </div>
+      </td>
+
+      {% endfor%}
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}

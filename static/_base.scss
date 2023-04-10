@@ -1,0 +1,171 @@
+//color scheme
+$color_primary: #c9d5b5;
+$color_secondary: #e3dbdb;
+$color_grey_light: #9f9f92;
+$color_grey: #6d6466;
+$color_grey_dark: #4e3d42;
+// FONT VARIABLES
+$font-primary: "Nunito", sans-serif;
+$font-display: "Josefin Sans", sans-serif;
+
+// RESPONSIVE BREAKPOINTS
+$bp-largest: 75em; // 1200px
+$bp-large: 62.5em; // 1000px
+$bp-medium: 50em; // 800px;
+$bp-small: 37.5em; // 600px;
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; // 10px/16px = 62.5% -> 1rem = 10px
+}
+
+body {
+  font-family: $font-primary;
+  padding: 0 3rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+//typography//
+
+//reusable class
+
+//animation
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+    box-shadow: none;
+  }
+
+  50% {
+    transform: scale(1.3);
+    box-shadow: 0 1rem 4rem rgba($color: #000000, $alpha: 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: none;
+  }
+}
+
+.container {
+  background-color: #fff;
+  height: 100vh;
+  width: 100%;
+  padding: 0;
+}
+
+.header {
+  width: 100%;
+
+  background-color: $color_secondary;
+  height: 5rem;
+
+  .navbar {
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    &_link {
+      display: inline-block;
+      height: 100%;
+      color: $color_grey_dark;
+      text-decoration: none;
+      transition: all 0.2s;
+      font-size: 1.5rem;
+      &:hover {
+        background-color: $color_grey_light;
+        border-radius: 2px;
+        font-size: 2rem;
+      }
+    }
+  }
+}
+
+.footer {
+  height: 5rem;
+  background-color: $color_secondary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.message_1 {
+  color: $color_grey;
+  font-weight: 400;
+}
+.message_2 {
+  color: $color_primary;
+  font-weight: 200;
+  font-size: 1.5rem;
+}
+
+.heading-1 {
+  color: $color_grey_dark;
+  font-weight: 200;
+}
+
+.btn {
+  display: block;
+  background-color: $color_primary;
+  font-size: 1rem;
+  width: max-content;
+  transition: all 0.5s;
+  &:hover {
+    text-decoration: none;
+
+    transform: translateY(-3px);
+  }
+}
+
+.btn-2 {
+  display: inline-block;
+  text-decoration: none;
+  outline: transparent;
+  text-align: center;
+  background-color: $color_secondary;
+  color: #4e3d42;
+  text-transform: uppercase;
+  font-size: 2rem;
+  font-weight: 200;
+  padding: 1rem 5rem;
+  border-radius: 100px;
+  transition: all 0.2s;
+
+  &:hover {
+    text-decoration: none;
+    color: #4e3d42;
+    outline: transparent;
+    transform: translateY(-5px);
+  }
+}
+
+.btn-3 {
+  display: block;
+
+  background-color: transparent;
+  font-size: 1rem;
+  color: $color_grey_dark;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  width: max-content;
+  margin: 0 auto;
+
+  &:hover {
+    text-decoration: none;
+    color: $color_grey_dark;
+  }
+}
+
+.btn-box {
+  display: flex;
+  justify-content: center;
+}

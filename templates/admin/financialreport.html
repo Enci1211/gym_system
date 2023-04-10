@@ -1,0 +1,71 @@
+{% extends "admin/admin.html" %} {% block title %}admin's home page {% endblock%}
+{% block content %}
+
+<section class="home">
+  <div class="fr">
+    <div class="content">
+      <h2>The total income during this period is ${{total}}<h2>
+        <h2>Income from subscription fee is : ${{total_sub}}</h2>
+        <h2>Income from personal training session is : ${{total_PT}}</h2>
+      <!--------------------pt-->
+      <h2>PT session finacial report</h2>
+   
+      <table class="table table-bordered  table-striped table-hover table align-middle">
+    <thead class="table-dark align-middle">
+      
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">date</th>
+        <th scope="col">amont</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for payment in payment_PT %}
+        <tr>
+          <td>{{ payment[0] }}</td>
+          <td>{{ payment[1] }}</td>
+          <td>{{ payment[2] }}</td>
+          {% endfor %}
+
+        </tr>
+    <tfoot>
+        <tr>
+        <th id="total" colspan="2">Total :</th>
+        <td>{{total_PT}}</td>
+        </tr>
+    </tfoot>
+    </tbody>
+  </table>
+<!--------------------sub-->
+  <h2>subscription finacial report</h2>
+   
+  <table class="table table-bordered  table-striped table-hover table align-middle">
+<thead class="table-dark align-middle">
+  
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">date</th>
+    <th scope="col">amont</th>
+  </tr>
+</thead>
+<tbody>
+    {% for payment in payment_sub %}
+    <tr>
+      <td>{{ payment[0] }}</td>
+      <td>{{ payment[1] }}</td>
+      <td>{{ payment[2] }}</td>
+      {% endfor %}
+
+    </tr>
+<tfoot>
+    <tr>
+    <th id="total" colspan="2">Total :</th>
+    <td>{{total_sub}}</td>
+    </tr>
+</tfoot>
+</tbody>
+</table>
+  </div>
+</div>
+</section>
+  {% endblock %}

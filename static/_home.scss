@@ -1,0 +1,33 @@
+.login_container {
+  background-image: linear-gradient(rgba(grey, 0.7), rgba(grey, 0.7)),
+    url(../static/img/main.jpg);
+  background-size: cover;
+  background-position: center;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &_input {
+    display: block;
+    padding: 1rem 3rem;
+    margin-bottom: 2rem;
+    border: none;
+  }
+
+  &_btn {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+.login_input {
+  border-radius: 5px;
+  outline: none;
+}

@@ -1,0 +1,62 @@
+{% extends "admin/admin.html" %} {% block title %}admin's home page {%
+endblock%} {% block content %}
+
+<style>
+  .badge {
+    color: black;
+    background-color: orange;
+    font-size: 20px;
+    padding: 10px;
+  }
+</style>
+
+<section class="home">
+  <div class="deduct">
+    <div class="content">
+      {% if deducted %}
+      <h2>the member's subscription fee had been deducted!</h2>
+      <h2>
+        the subscription end date for all the active member extended to
+        {{seven_days_after}}
+      </h2>
+
+      {% else %} {% if no_active %}
+      <h2>{{no_active}}</h2>
+
+      <a href="/admin/memberprofile/?userid={{admin_userid}}">
+        go to member page to re-active member</a
+      >
+      {% else %}
+      <form action="{{url_for('deduct')}}" method="POST">
+        <h2>
+          The subscription end date for all the active members is
+          <div class="badge badge-pill badge-block badge-warning">
+            {{current_sub_end_date}}.
+          </div>
+          <br />
+          Are you sure you want to extend it?
+        </h2>
+        <button>
+          <a
+            href="/admin/?userid={{userid}}"
+            class="btn btn-dark btn-lg btn-block"
+            >Back</a
+          >
+        </button>
+        <button>
+          <a
+            href="/admin/deactivate/?userid={{userid}}"
+            class="btn btn-dark btn-lg btn-block"
+            >Deactive Member</a
+          >
+        </button>
+        <button type="submit" class="btn btn-dark btn-lg btn-block">
+          Deduct Subscription fee
+        </button>
+      </form>
+      {% endif %} {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

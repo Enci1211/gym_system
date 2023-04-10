@@ -1,0 +1,57 @@
+{% extends "trainer/trainer.html" %} 
+{% block title %}
+Trainer Management
+{% endblock%} 
+
+{% block content %} 
+
+
+<section  class="home" id="home">
+  <div class="tp">
+      <div class="content">
+  {% if updated %}
+  <h2>you have updated your profile!</h2>
+  {% endif %}
+  <h2>trainer profile</h2>
+  
+<table class="table table-bordered  table-striped table-hover table align-middle">
+  <thead class="table-dark align-middle" method="POST">
+    <tr>
+      <th scope="col">staff id</th>
+      <th scope="col">user id</th>
+      <th scope="col">first name</th>
+      <th scope="col">last name</th>
+      <th scope="col">email</th>
+      <th scope="col">phone number</th>
+      <th scope="col">address</th>
+      <th scope="col">date of birth</th>
+      <th scope="col">specialties</th>
+      <th scope="col">action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for a in staff %}
+    <tr>
+      <td>{{a[0]}}</td>
+      <td>{{a[1]}}</td>
+      <td>{{a[2]}}</td>
+      <td>{{a[3]}}</td>
+      <td>{{a[4]}}</td>
+      <td>{{a[5]}}</td>
+      <td>{{a[6]}}</td>
+      <td>{{a[7]}}</td>
+      <td>{{a[8]}}</td>
+      <td>
+        <button>
+          <a href="/trainer/profile/update?userid={{a[1]}}" class="btn btn-dark btn-lg">Update</a>
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+      </div>
+  </div>
+</section>
+{% endblock %}

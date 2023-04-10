@@ -1,0 +1,61 @@
+{% extends "admin/admin.html" %} {% block title %}member's home page {%
+endblock%} {% block content %}
+
+<section class="home">
+  <div class="fr">
+    <div class="content">
+      <h2>{{ send_noti }}</h2>
+
+      <form action="{{url_for('deactivate')}}" method="POST">
+        {% if deactivate_success %}
+        <h2>{{deactivate_success}}</h2>
+        {% else %}
+        <h2>member with the balance under $-20 but still active:</h2>
+
+        <table
+          class="table table-bordered table-striped table-hover table align-middle"
+        >
+          <thead class="table-dark align-middle" method="POST">
+            <tr>
+              <th scope="col">member id</th>
+              <th scope="col">user id</th>
+              <th scope="col">Full name</th>
+
+              <th scope="col">subscription start date</th>
+              <th scope="col">subscription end date</th>
+              <th scope="col">balance</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for a in member_deactive %}
+            <tr>
+              <td>{{a[0]}}</td>
+              <td>{{a[1]}}</td>
+              <td>{{a[2]}} {{a[3]}}</td>
+
+              <td>{{a[9]}}</td>
+              <td>{{a[10]}}</td>
+              <td>{{a[11]}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-center">
+          <a
+            href="/admin/feenotification/?userid={{admin_userid}}"
+            class="btn btn-warning btn-lg btn-block"
+            >Remind members to pay</a
+          >
+          <div style="margin: 10px 20px"></div>
+          <button type="submit" class="btn btn-warning btn-lg btn-block">
+            Deactivate members balance under $-20
+          </button>
+        </div>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

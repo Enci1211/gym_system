@@ -1,0 +1,131 @@
+.member_container {
+  background-color: $color_primary;
+  height: calc(100vh - 10rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content_container {
+  padding: 3rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.group_class_container,
+.tranier_session_container {
+  text-align: center;
+}
+.class_table {
+  width: 90%;
+  font-size: 2px;
+  text-align: center;
+  padding: 1rem 0;
+  border-collapse: collapse;
+  color: #6d6466;
+  font-weight: 200;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.class_head {
+  background-color: #9f9f92;
+  color: #4e3d42;
+  padding: 2rem;
+}
+.class_btn {
+  max-width: 10rem;
+  border-radius: 5px;
+  &:hover {
+    outline: none;
+    animation: pulsate 0.5s infinite;
+  }
+}
+
+.class_btn_full {
+  max-width: 10rem;
+  border-radius: 5px;
+  transition: all 0.5s;
+  &:hover {
+    background-color: $color_grey_light;
+  }
+}
+
+.table_head {
+  background-color: $color_primary;
+}
+
+.primary_table {
+  border-collapse: collapse;
+  color: #6d6466;
+  font-weight: 200;
+  border-radius: 1rem;
+  overflow: hidden;
+  margin: 3rem;
+}
+
+td {
+  padding: 1.5rem;
+  input {
+    border: none;
+    background-color: transparent;
+    outline: none;
+  }
+  input::placeholder {
+    color: $color_grey;
+
+    font-size: 2rem;
+    font-weight: 200;
+  }
+}
+
+td:first-child {
+  font-weight: 400;
+}
+
+.member_view_trainer_btn {
+  font-size: 1rem;
+  display: inline-block;
+}
+
+.pay_page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  color: $color_grey;
+  width: 35rem;
+  padding: 5rem 0;
+  margin: 0 auto;
+  background-color: transparent;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  input {
+    outline: none;
+  }
+}
+
+.yoga {
+  font-weight: 400;
+  background-color: coral;
+}
+.pilates {
+  font-weight: 400;
+  background-color: gold;
+}
+.zumba {
+  font-weight: 400;
+  background-color: goldenrod;
+}
+.spinning {
+  font-weight: 400;
+  background-color: rgb(234, 143, 109);
+}
+.kickboxing {
+  font-weight: 400;
+  background-color: bisque;
+}

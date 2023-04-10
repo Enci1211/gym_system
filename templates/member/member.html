@@ -1,0 +1,82 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>
+      {% block title %} sweat society fitness member home page {% endblock %}
+    </title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="/static/main.css" />
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+      integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    {% block header %}
+    <header class="header member_header">
+      <nav class="navbar member_navbar">
+        <a href="{{ url_for('member', userid=userid) }}" class="navbar_link"
+          >Home</a
+        >
+        <a href="/member/profile/?userid={{userid}}" class="navbar_link"
+          >My Profile</a
+        >
+        <a href="/member/booking/?userid={{userid}}" class="navbar_link"
+          >My booking</a
+        >
+        <a href="/member/groupclass/?userid={{userid}}" class="navbar_link"
+          >Group Class
+        </a>
+        <a href="/member/viewtrainer/?userid={{userid}}" class="navbar_link">
+          Training session</a
+        >
+        <a href="/member/paysubscription/?userid={{userid}}" class="navbar_link"
+          >Pay membership</a
+        >
+        <a href="/" class="navbar_link">Log out</a>
+      </nav>
+    </header>
+    {% endblock %}
+
+    <section class="member_container">
+      {% block content %}
+      <h2 class="message_1">Welcome, {{first_name}} {{last_name}}</h2>
+      {% endblock %}
+    </section>
+
+    <footer class="footer">
+      <address>
+        Contact details: 123 street, lincoln gym &bull;
+        lincolngym@christchurch.co.nz &bull; ph. 03 555 1234
+      </address>
+    </footer>
+  </body>
+</html>

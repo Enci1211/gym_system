@@ -1,0 +1,76 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>sweat socioty fitness</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="/static/main.css" />
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+      integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <div class="login_container">
+      <section class="login">
+        <h2 class="message_2">{{ not_user }}</h2>
+        <h2 class="message_2">{{ incorrect_password }}</h2>
+
+        <form class="login_form" action="{{url_for('home')}}" method="POST">
+          <input
+            class="login_input"
+            type="userid_or_email"
+            placeholder="Email or Userid"
+            name="userid_or_email"
+            id="userid_or_email"
+            required
+          />
+          <input
+            class="login_input"
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter Password"
+            required
+          />
+
+          <button type="submit" class="btn login_btn">Log in</button>
+        </form>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <address>
+        Contact details: 123 street, lincoln gym &bull;
+        lincolngym@christchurch.co.nz &bull; ph. 03 555 1234
+      </address>
+    </footer>
+  </body>
+</html>

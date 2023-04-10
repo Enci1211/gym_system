@@ -1,0 +1,52 @@
+{% extends "member/member.html" %}
+<title>{% block title %} member's home page {% endblock%}</title>
+
+{% block content %} {% if updated %}
+<section class="member_profile">
+  <h2 class="heading-1">you have updated your profile!</h2>
+  {% endif %}
+  <h1 class="heading-1">My Profile:</h1>
+  <input type="hidden" name="userid" value="{{userid}}" />
+
+  <table class="primary_table table-bordered table-hover">
+    <tbody>
+      {% for a in member %}
+      <tr>
+        <td>user id</td>
+        <td>{{a[1]}}</td>
+      </tr>
+      <tr>
+        <td>first name</td>
+        <td>{{a[2]}}</td>
+      </tr>
+      <tr>
+        <td>last name</td>
+        <td>{{a[3]}}</td>
+      </tr>
+      <tr>
+        <td>email</td>
+        <td>{{a[4]}}</td>
+      </tr>
+      <tr>
+        <td>phone number</td>
+        <td>{{a[5]}}</td>
+      </tr>
+      <tr>
+        <td>address</td>
+        <td>{{a[6]}}</td>
+      </tr>
+      <tr>
+        <td>date of birth</td>
+        <td>{{a[7]}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+    <input type="hidden" name="userid" value="{{a[1]}}" />
+    <a href="/member/profile/edit/?userid={{userid}}" class="btn-2">edit</a>
+  </div>
+
+  {% endfor %}
+</section>
+
+{% endblock %}

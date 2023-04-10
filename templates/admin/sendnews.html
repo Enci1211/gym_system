@@ -1,0 +1,128 @@
+{% extends "admin/admin.html" %}
+
+{% block title %}
+Send news
+{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  
+    <style>
+      /* CSS code for the progress bar */
+      .progress {
+        height: 20px;
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        margin: 10px 0;
+      }
+  
+      .bar {
+        height: 20px;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        width: 0%;
+      }
+    </style>
+  
+  
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=submit] {
+  background-color: #D2300E;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #92230C;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.progress {
+  height: 30px;
+  margin-top: 10px;
+}
+
+.progress-bar {
+  transition: width 0.5s ease-in-out;
+}
+
+</style>
+</head>
+<body>
+
+<section class="home">
+  <div class="pc">
+    <div class="content">
+      {{news_pop}}
+      <h3>Send news to member</h3>
+      <div class="container">
+        <form action="/admin/sendnews/", method="post" id="news-form">
+          <label for="news">News</label>
+          <textarea id="subject" name="mynews" placeholder="Write something cool..." style="height:200px"></textarea>
+
+          <input type="submit" value="Send to all member">
+        </form>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelector('#news-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+
+    fetch('/admin/sendnews/', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log(data);
+      document.querySelector('.progress-bar').style.width = '100%';
+    })
+    .catch(error => {
+      console.error('There was an error sending the news:', error);
+    });
+  });
+</script>
+
+</body>
+</html>
+
+{% endblock %}

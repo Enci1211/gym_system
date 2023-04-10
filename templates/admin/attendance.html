@@ -1,0 +1,135 @@
+{% extends "admin/admin.html" %} {% block title %} admin's home page {%
+endblock%} {% block content %}
+
+<section class="home">
+  <div class="fr">
+    <div class="content">
+      {% if dbOutput and dbOutput1%}
+
+      <h2>member's attendance for gym area</h2>
+      <table
+        class="table table-bordered table-striped table-hover table align-middle"
+      >
+        <thead class="table-dark align-middle">
+          <tr>
+            <th scope="col">member id</th>
+            <th scope="col">first name</th>
+            <th scope="col">last name</th>
+            <th scope="col">date</th>
+            <th scope="col">timein</th>
+            <th scope="col">timeout</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for a in dbOutput %}
+          <tr>
+            <td>{{a[0]}}</td>
+            <td>{{a[1]}}</td>
+            <td>{{a[2]}}</td>
+            <td>{{a[4]}}</td>
+            <td>{{a[5]}}</td>
+            <td>{{a[6]}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <h2>member's attendance for PT session</h2>
+      <table
+        class="table table-bordered table-striped table-hover table align-middle"
+      >
+        <thead class="table-dark align-middle">
+          <tr>
+            <th scope="col">session_id</th>
+            <th scope="col">trainer name</th>
+            <th scope="col">date</th>
+            <th scope="col">booking status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for a in dbOutput1 %}
+          <tr>
+            <td>{{a[0]}}</td>
+            <td>{{a[1]}}</td>
+            <td>{{a[2]}}</td>
+            <td>{{a[3]}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% elif dbOutput1%}
+      <h2>member's attendance for PT session</h2>
+      <table
+        class="table table-bordered table-striped table-hover table align-middle"
+      >
+        <thead class="table-dark align-middle">
+          <tr>
+            <th scope="col">session_id</th>
+            <th scope="col">trainer name</th>
+            <th scope="col">date</th>
+            <th scope="col">booking status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for a in dbOutput1 %}
+          <tr>
+            <td>{{a[0]}}</td>
+            <td>{{a[1]}}</td>
+            <td>{{a[2]}}</td>
+            <td>{{a[3]}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% elif dbOutput%}
+
+      <h2>member's attendance for gym area</h2>
+      <table
+        class="table table-bordered table-striped table-hover table align-middle"
+      >
+        <thead class="table-dark align-middle">
+          <tr>
+            <th scope="col">member id</th>
+            <th scope="col">first name</th>
+            <th scope="col">last name</th>
+            <th scope="col">date</th>
+            <th scope="col">timein</th>
+            <th scope="col">timeout</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for a in dbOutput %}
+          <tr>
+            <td>{{a[0]}}</td>
+            <td>{{a[1]}}</td>
+            <td>{{a[2]}}</td>
+            <td>{{a[4]}}</td>
+            <td>{{a[5]}}</td>
+            <td>{{a[6]}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+      <h2>whoops, no attendance information for this member...</h2>
+      {% endif %}
+      <br />
+      <!-- back button -->
+      <div class="d-grid gap-2 d-md-flex justify-content-start">
+        <a
+          href="/admin/memberprofile/?userid={{admin_userid}}"
+          type="button"
+          class="btn btn-dark btn-lg"
+          >Back</a
+        >
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

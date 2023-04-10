@@ -1,0 +1,14 @@
+{% extends "member/member.html" %} {% block title %}member's home page {%
+endblock%} {% block content %}
+
+<h1 class="heading-1">congratuations!</h1>
+<p>you have paid off all your outstanding bill!</p>
+
+<a
+  href="/member/?userid={{userid}}"
+  type="button"
+  class="btn-2 member_view_trainer_btn"
+  >Back to member's home page</a
+>
+
+{%endblock%}
