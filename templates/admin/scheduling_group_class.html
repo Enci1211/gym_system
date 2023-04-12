@@ -1,0 +1,21 @@
+{% extends "admin/admin.html" %} {% block title %}admin's home page {%
+endblock%} {% block content %} {% if scheduled %}
+<h2>You've scheduled group classes for next week!</h2>
+<a href="/admin/?userid={{admin_userid}}" class="btn-2">Back</a>
+{% else %}
+<form action="{{url_for('scheduling_group_class')}}" method="POST">
+  <input type="hidden" name="admin_userid" value="{{admin_userid}}" />
+  <h2>
+    Are you sure you want to schedule group classes from
+    <span class="badge badge-pill badge-block badge-warning">
+      {{future_date}}
+    </span>
+    to
+    <span class="badge badge-pill badge-block badge-warning">
+      {{two_week_later}} ?
+    </span>
+  </h2>
+  <button type="submit" class="btn-2">Yes! schedule now!</button>
+  <a href="/admin/?userid={{admin_userid}}" class="btn-2">Back</a>
+</form>
+{% endif %} {% endblock %}

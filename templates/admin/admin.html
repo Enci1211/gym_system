@@ -42,7 +42,7 @@
       
      
       <nav class="navbar">
-        <a href="{{ url_for('admin', userid=userid) }}" class="navbar_link">Home</a>
+        <a href="/admin/?userid={{admin_userid}}" class="navbar_link">Home</a>
          <!-- dropdown menu for member-->
          <div class="dropdown">
           <a class="dropdown-toggle navbar_link" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -52,20 +52,29 @@
               <li><a class="dropdown-item navbar_link" href="/admin/memberprofile/?userid={{admin_userid}}">View&Update</a></li>
               <li><a class="dropdown-item navbar_link" href="/admin/addmember/?userid={{admin_userid}}">Add Member</a></li>
               <li><a class="dropdown-item navbar_link" href="/admin/subscription/?userid={{admin_userid}}">Overdue member</a></li>
-              <li><a class="dropdown-item navbar_link" href="/admin/sendnews/?userid={{admin_userid}}">Send News</a></li>
               </ul>
           </div>
           
-           <!-- dropdown menu for class and session-->
+           <!-- tranier-->
+          
+         
+         
+          <a href="/admin/viewtrainers/?userid={{admin_userid}}" class="navbar_link">Trainer List</a>
+          <!-- scheduling for new week-->
+
           <div class="dropdown">
-          <a class="dropdown-toggle navbar_link" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-          Trainer&Class
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <li><a class="dropdown-item navbar_link" href="/admin/popularclass/?userid={{admin_userid}}">Popular Class</a></li>
-          <li><a class="dropdown-item navbar_link" href="/admin/viewtrainers/?userid={{admin_userid}}">Trainer List</a></li>
-          </ul>
-          </div>
+            <a class="dropdown-toggle navbar_link" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              scheduling
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          
+                <li><a class="dropdown-item navbar_link" href="/admin/scheduling/group_class/?userid={{admin_userid}}">scheduling group class</a></li>
+                <li><a class="dropdown-item navbar_link" href="/admin/scheduling/pt_session/?userid={{admin_userid}}">scheduling PT session</a></li>
+                
+                </ul>
+            </div>
+          
+         
     
           <!-- dropdown menu for financial report -->
           <div class="dropdown">

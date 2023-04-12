@@ -1,43 +1,63 @@
-{% extends "admin/admin.html" %}
-{% block title %}
-Addmember
-{% endblock %}
-{% block content %}
+{% extends "admin/admin.html" %} {% block title %} Addmember {% endblock %} {%
+block content %}
 
-<section class="home">
-  <div class="am">
-    <div class="content">
-<!-- h2 title for this page -->
-<span class="btn btn-dark"><h2>Add a new member</h2></span>
-<br>
-<br>
-{% if message %}
-        <div class="alert alert-danger">{{ message }}</div>
-    {% endif %}
-<meta name="format-detection" content="date=YY/MM/DD">
+<h2 class="heading-2">Add a new member</h2>
+{% if exist_email %}
+<h2 class="heading-2">
+  This email address is already in use, please use another one.
+</h2>
+{% elif wrong_phone %}
+<h2 class="heading-2">Phone number must be number.</h2>
+{% elif adult_not %}
+<h2 class="heading-2">Can only register people over 18 years old.</h2>
+{% endif %}
+<meta name="format-detection" content="date=YY/MM/DD" />
 <!-- form for adding a new member -->
 <form action="/admin/addmember" method="POST">
+  <input type="hidden" name="admin_userid" value="{{admin_userid}}" />
   <div class="form-group"></div>
   <label for="first_name">*First Name:</label>
-  <input type="text" class="form-control" id="first_name" name="first_name" required>
+  <input
+    type="text"
+    class="form-control"
+    id="first_name"
+    name="first_name"
+    required
+  />
   <label for="last_name">*Last Name:</label>
-  <input type="text" class="form-control" id="last_yname" name="last_name" required>
+  <input
+    type="text"
+    class="form-control"
+    id="last_yname"
+    name="last_name"
+    required
+  />
   <label for="email">*Email:</label>
-  <input type="email" class="form-control" id="email" name="email" required>
+  <input type="email" class="form-control" id="email" name="email" required />
   <label for="phone">*Phone Number:</label>
-  <input type="text" class="form-control" id="phone" name="phone" maxlength="10" required>
+  <input
+    type="text"
+    class="form-control"
+    id="phone"
+    name="phone"
+    maxlength="10"
+    required
+  />
   <label for="address">Address:</label>
-  <input type="text" class="form-control" id="address" name="address">
+  <input type="text" class="form-control" id="address" name="address" />
   <label for="dob">Date of Birth:</label>
-  <input type="date" class="form-control" id="dob" name="date_of_birth">
-  <br>
+  <input type="date" class="form-control" id="dob" name="date_of_birth" />
+  <br />
   <div class="d-grid gap-2 d-md-flex justify-content-start">
-    <input type="submit" value="Submit" class="btn btn-primary btn-lg">
+    <input type="submit" value="Submit" class="btn-2" />
     <!-- back button -->
-    <a href="/admin/memberprofile/?userid={{admin_userid}}" type="button" class="btn btn-dark btn-lg">Back</a>
-  </div>  
+    <a
+      href="/admin/memberprofile/?userid={{admin_userid}}"
+      type="button"
+      class="btn-2"
+      >Back</a
+    >
+  </div>
 </form>
-</div>
-</div>
-</section>
-{% endblock %}  
+
+{% endblock %}

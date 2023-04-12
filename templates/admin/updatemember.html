@@ -1,4 +1,4 @@
-{% extends "trainer/trainer.html" %} {% block title %}trainer's home page {%
+{% extends "admin/admin.html" %} {% block title %}member's home page {%
 endblock%} {% block content %} {% if message %}
 <div class="alert alert-danger">{{ message }}</div>
 {% endif %}
@@ -6,13 +6,14 @@ endblock%} {% block content %} {% if message %}
 <h2 class="heading-1">Update profile</h2>
 <!--header-->
 
-<form action="{{url_for('trainerprofile_update')}}" method="POST">
-  <input type="hidden" name="userid" value="{{userid}}" />
+<form action="{{url_for('updatemember')}}" method="POST">
+  <input type="hidden" name="member_user_id" value="{{member_user_id}}" />
+  <input type="hidden" name="admin_userid" value="{{admin_userid}}" />
   <table class="primary_table table-bordered table-hover">
     <tbody>
       <tr>
         <td>user id</td>
-        <td>{{userid}}</td>
+        <td>{{member_user_id}}</td>
       </tr>
       <tr>
         <td>first name</td>
@@ -57,24 +58,15 @@ endblock%} {% block content %} {% if message %}
       </tr>
       <tr>
         <td>date of birth</td>
-        <td>{{dateBirth}}</td>
-      </tr>
-      <tr>
-        <td>specieties</td>
-        <td>
-          <input
-            name="specialties"
-            value="{{specialties}}"
-            placeholder="{{specialties}}"
-            required
-          />
-        </td>
+        <td>{{date_of_birth}}</td>
       </tr>
     </tbody>
   </table>
   <div class="btn-box">
     <button type="submit" class="btn-2 member_btn">update</button>
-    <a href="/trainer/profile/?userid={{userid}} " class="btn-2 member_btn"
+    <a
+      href="/admin/memberprofile/?userid={{admin_userid}} "
+      class="btn-2 member_btn"
       >Back</a
     >
   </div>

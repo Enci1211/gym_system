@@ -24,6 +24,7 @@ current_date = date.today()
 current_date = current_date.replace(year=2023, month=3, day=20)
 
 future_date = current_date + timedelta(days=7)
+two_week_later=future_date + timedelta(days=7)
 week_ago = current_date - timedelta(days=7)
 current_time = time.strftime("%H:%M:%S")
 
@@ -754,90 +755,143 @@ def cancel():
 @app.route("/admin/deactivate/", methods=['POST', 'GET'])
 def deactivate():
     if request.method == 'POST':
+       admin_userid=request.form.get('admin_userid')
        cur = getCursor()
        dbsql = ("""update member
-                   set subscription_status = 0 where balance < -20.00 ;""")    #change the subscription_status to deactive for all memebers with the balance under 0
+                   set subscription_status = 0 where balance < -20.00 ;""")    #change the subscription_status to deactive for all memebers with the balance under -20
        cur.execute(dbsql)
        connection.commit()
+       return redirect(url_for('deactivate',userid=admin_userid,deactivated=True))
 
-       cur2 = getCursor()
-       dbsql2 = ("""SELECT * FROM member where balance  < -20.00 and subscription_status = 1;""")    #fetch the member with the balance under 20
-       cur2.execute(dbsql2)
-       dbOutput2 = cur2.fetchall() 
-       return render_template("admin/deactivate.html",deactivate_success = "You deactivated all memebers with balance under 0 !",member_deactive = dbOutput2)
     else:
-       
+        admin_userid = request.args.get("userid")
+        deactivated = request.args.get("deactivated")
         cur = getCursor()
         dbsql = """SELECT * FROM member
                    WHERE balance < -20.00 AND subscription_status = 1;"""
         cur.execute(dbsql)
         dbOutput = cur.fetchall()
-        return render_template("admin/deactivate.html", member_deactive=dbOutput)
+        
+        return render_template("admin/deactivate.html",admin_userid=admin_userid,deactivated=deactivated,member_deactive=dbOutput)
+        
 
 
 # c2 manager-view member's profile
-@app.route("/admin/memberprofile/")
+@app.route("/admin/memberprofile/", methods=['POST', 'GET'])
 def memberprofile():
-    connection = getCursor()
-    connection.execute("""SELECT * FROM member;""")
-    memberList=connection.fetchall()
-    return render_template("admin/memberprofile.html", memberlist =  memberList)
+    cur = getCursor()
+    cur.execute("""SELECT * FROM member order by userid;""")
+    memberList=cur.fetchall()
+    
+    if request.method == 'POST':
+       admin_userid=request.form.get('admin_userid')
+       last_name_input = request.form.get("search") 
+       last_name = last_name_input.lower().capitalize()
+       cur1 = getCursor()
+       cur1.execute("""SELECT last_name FROM member;""")  #get all the lastname from database
+       dbOutput1 = cur1.fetchall()
+       lastname_list = [item for t in dbOutput1 for item in t]
+
+       if last_name in lastname_list: 
+           return redirect(url_for('memberprofile',userid=admin_userid,last_name=last_name))
+           
+       else: 
+           incorrect = True
+           return redirect(url_for('memberprofile',incorrect=incorrect,userid=admin_userid))
+           
+    else:
+       admin_userid = request.args.get('userid')
+       incorrect=request.args.get('incorrect')
+       last_name=request.args.get('last_name')
+
+       cur2 = getCursor()
+       sql2 = ("""select * from member where last_name = %s;""") #display the member details with the lastname admin entered
+       parameter2 = (last_name,)
+       cur2.execute(sql2,parameter2)
+       dbOutput2 = cur2.fetchall()
+       return render_template("admin/memberprofile.html", searched_member=dbOutput2,memberlist =  memberList,admin_userid=admin_userid,incorrect=incorrect)
 
 # c3 manager-update member's profile
-@app.route("/admin/memberprofile/update", methods=['POST'])
+@app.route("/admin/memberprofile/update/", methods=['GET','POST'])
 def updatemember():
-    member_detail = request.form
-    member_id = member_detail.get('member_id')
-    email = member_detail.get('email')
-    phone = member_detail.get('phone')
-    address = member_detail.get('address')
-    # Update the member's profile
-    cur = getCursor()
-    dbsql = """UPDATE member SET email = %s, phone = %s, address = %s WHERE member_id = %s;"""
-    parameters = (email, phone, address, member_id)
-    cur.execute(dbsql, parameters)
-    connection.commit()
-    return redirect(url_for('memberprofile', member_id=member_id))
+     # fetch the member's userid
+    if request.method == 'GET':
+       admin_userid = request.args.get('userid')
+       member_user_id = request.args.get('member_user_id')
+       print(member_user_id)
+       cur1 = getCursor()
+       sql1=("""SELECT first_name, last_name, email, phone, address, date_of_birth FROM member where userid = %s;""")
+       parameter1 = (member_user_id,)
+       cur1.execute(sql1,parameter1)
+       dbOutput1=cur1.fetchall()
+       print(dbOutput1)
+
+       first_name=dbOutput1[0][0]
+       last_name=dbOutput1[0][1]
+       date_of_birth=dbOutput1[0][5]
+       email=dbOutput1[0][2]
+       phone=dbOutput1[0][3]
+       address=dbOutput1[0][4]
+        
+       return render_template("admin/updatemember.html", member_user_id=member_user_id,admin_userid=admin_userid,first_name=first_name,last_name=last_name,email=email,phone=phone,address=address,date_of_birth=date_of_birth)
+    elif request.method == 'POST': 
+        member_detail = request.form
+      
+        member_user_id=member_detail.get('member_user_id')
+        admin_userid=member_detail.get('admin_userid')
+
+        email_new = member_detail.get('email')
+        phone_new = member_detail.get('phone')
+        address_new = member_detail.get('address')
+        
+        # Update the member's profile
+        cur = getCursor()
+        dbsql = """UPDATE member SET email = %s, phone = %s, address = %s WHERE userid = %s;"""
+        parameters = (email_new, phone_new, address_new, member_user_id)
+        cur.execute(dbsql, parameters)
+        connection.commit()
+
+        return redirect(url_for('updatemember',userid=admin_userid,member_user_id=member_user_id))
+        
 
 
 
 # c4 manager-add new member
 @app.route("/admin/addmember/", methods=["GET","POST"])
 def addmember():
-    # format dates for the query
+
     if request.method == "POST": 
          # Get the form data
-        first_name = request.form.get('first_name')
-        last_name = request.form.get('last_name')
-        email = request.form.get('email')
-        phone = request.form.get('phone')
-        address = request.form.get('address')
-        date_of_birth= request.form.get('date_of_birth') 
+        admin_userid=request.form.get('admin_userid')
+        first_name_new = request.form.get('first_name')
+        last_name_new = request.form.get('last_name')
+        email_new = request.form.get('email')
+        phone_new = request.form.get('phone')
+        address_new = request.form.get('address')
+        date_of_birth_new= request.form.get('date_of_birth') 
+        print(date_of_birth_new)
         # Check if the email address is already in use
         cur = getCursor()
-        cur.execute("SELECT email FROM member WHERE email = %s", (email,))
-        existing_user = cur.fetchone()
-        if existing_user:
-            message = 'This email address is already in use.'
-            return render_template("admin/addmember.html", message=message)
-        # Validate phone number
-        if not phone.isdigit() or len(phone[0]) > 10:
-            message = 'Phone number must be number and less than 10-digit.'
-            return render_template("admin/addmember.html", message=message)
+        cur.execute("SELECT email FROM member WHERE email = %s", (email_new,))
+        dbOutput = cur.fetchall()
+        if dbOutput:
+            exist_email = True
+            return redirect(url_for('addmember',userid=admin_userid,exist_email=exist_email))
     
-        # Validate date of birth
-        dob = datetime.datetime.strptime(date_of_birth, '%Y-%m-%d').date()
-        today = date.today()
-        age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-        if age < 14:
-            message = "You must be older than 14 years old."
-            return render_template("admin/addmember.html", message=message)
+        # Validate phone number
+        if not phone_new.isdigit():
+            wrong_phone = True
+            return redirect(url_for('addmember',userid=admin_userid,wrong_phone=wrong_phone))
+            
+        # validate age
+        age_18 = current_date - timedelta(days=18*365)
+        dob = datetime.datetime.strptime(date_of_birth_new, '%Y-%m-%d').date()
+        if dob > age_18:
+            adult_not = True
+            return redirect(url_for('addmember',userid=admin_userid,adult_not=adult_not))
+            
         
-        # subscrtion date star and end
-        current_date = date.today()
-        future_date = current_date + timedelta(days=7)
-        current_date_str = current_date.strftime('%Y-%m-%d')
-        future_date_str = future_date.strftime('%Y-%m-%d')
+        # subscrtion date start and end
         
         cur = getCursor()
         cur.execute("INSERT INTO user (password,role) VALUES ('aaa000','member')")
@@ -846,20 +900,26 @@ def addmember():
         cur.execute('''
                 INSERT INTO member (userid, first_name, last_name, email, phone, address, date_of_birth,subscription_status,subscription_start_date,subscription_end_date,balance)
                 VALUES(%s,%s,%s,%s,%s,%s,%s,1,%s,%s,0.00)''',
-                (userid, first_name, last_name, email, phone, address, date_of_birth,current_date_str,future_date_str))
+                (userid, first_name_new, last_name_new, email_new, phone_new, address_new, date_of_birth_new,current_date_str,future_date_str))
     
         # Commit the transaction and redirect to member profile
         connection.commit()
-        return redirect(url_for('memberprofile'))
+        return redirect(url_for('memberprofile',userid=admin_userid))
     # Render the add member page if the request method is not POST
-    return render_template("admin/addmember.html")
+    if request.method == 'GET':
+       admin_userid = request.args.get('userid')
+       exist_email = request.args.get('exist_email')
+       wrong_phone = request.args.get('wrong_phone')
+       adult_not = request.args.get('adult_not')
+       return render_template("admin/addmember.html",admin_userid=admin_userid,exist_email=exist_email,wrong_phone=wrong_phone,adult_not=adult_not)
 
 # c5 manager ---deducting member's subscription fee
 @app.route("/admin/deduct/",methods=["GET","POST"])
 def deduct():
     if request.method == "GET": 
 
-        userid = request.args.get("userid")
+        admin_userid = request.args.get("userid")
+        deducted = request.args.get("deducted")
         cur = getCursor()   # fetch current subscription end date for active members
         cur.execute("""select subscription_end_date from member where subscription_status = 1;""")
         dbOutput = cur.fetchall()
@@ -868,12 +928,13 @@ def deduct():
             current_sub_end_date = dbOutput[0][0]
         except IndexError:
             no_active='whoops, there are no active member now...'
-            return render_template("admin/deduct.html", no_active=no_active, dbOutput=dbOutput)  
-        return render_template("admin/deduct.html",current_sub_end_date=current_sub_end_date,userid=userid)
+            return render_template("admin/deduct.html", no_active=no_active, dbOutput=dbOutput,admin_userid=admin_userid)  
+        return render_template("admin/deduct.html",current_sub_end_date=current_sub_end_date,admin_userid=admin_userid,deducted =deducted,seven_days_after = future_date)
            
 
     if request.method == "POST": 
-       deducted = 1
+       admin_userid=request.form.get('admin_userid')
+       
        cur = getCursor()   # fetch current balance info of all the active members
        cur.execute("""select balance from member where subscription_status = 1;""")
        dbOutput = cur.fetchall()
@@ -893,7 +954,7 @@ def deduct():
        parameter3 = (future_date,)
        cur3.execute(sql3,parameter3)
        connection.commit()
-       return render_template("admin/deduct.html",seven_days_after = future_date,deducted=deducted)
+       return redirect(url_for('deduct',userid=admin_userid,deducted=True))
     
     
 # c6 As a manager, I want to filter the status of subscription so that I can see the people are overdue
@@ -901,76 +962,79 @@ def deduct():
 # c7 manager---view member’s subscription status So that I can see who paid and overdue to keep track of the member’s subscription payment monthly
 @app.route("/admin/subscription/", methods = ['POST','GET'])
 def subscription():
-    userid = request.args.get("userid")
-    connection = getCursor()
-    sql=("""SELECT member_id, first_name, last_name, subscription_status, subscription_start_date, subscription_end_date, balance FROM member where balance < 0;""")    #fetch the member info
-    
-    connection.execute(sql)
-    dboutput=connection.fetchall()
-    return render_template("admin/viewsubscription.html", mbersub_status= dboutput ,userid=userid)
+    if request.method == "GET":  
+        admin_userid = request.args.get("userid")
+        message = request.args.get("message")
+        connection = getCursor()
+        sql=("""SELECT userid, first_name, last_name, subscription_status, subscription_start_date, subscription_end_date, balance FROM member where balance < -20;""")    #fetch the member info
+        
+        connection.execute(sql)
+        dboutput=connection.fetchall()
+        return render_template("admin/viewsubscription.html", mbersub_status= dboutput ,admin_userid=admin_userid,message=message)
+    if request.method == "POST":  
+        admin_userid=request.form.get('admin_userid')
+        message = True
+        return redirect(url_for('subscription',userid=admin_userid,message=message))
+      
 
 
 
 
 # c8 As a manager, I want to delete a member. So that member can be current and up to date.
-@app.route('/admin/memberprofile/delete', methods=['POST'])
+@app.route('/admin/memberprofile/delete/', methods=['GET','POST'])
 def delete_member():
-    member_id = request.form.get('id')
+    member_user_id = request.args.get('member_user_id')
+    admin_userid = request.args.get('userid')
 
-    cur1=getCursor()    # fetch userid
-    sql1=("""select userid from member where member_id = %s;""")
-    parameter1=(member_id,)
+    cur1 = getCursor()
+    sql1=("""SELECT subscription_status from member WHERE userid = %s;""")
+    parameter1=(member_user_id,)
     cur1.execute(sql1,parameter1)
-    dbOutput1 = cur1.fetchall()
+    dbOutput1=cur1.fetchall() # fetch member's status, active/inactive
+    print(member_user_id)
+    if dbOutput1[0][0] == 1: # active memeber
+        active_member = True
+        cur = getCursor()
+        cur.execute("""SELECT * FROM member order by userid;""")
+        memberList=cur.fetchall()
+            
+        return render_template("admin/memberprofile.html", memberlist =  memberList,active_member=active_member,admin_userid=admin_userid,member_user_id=member_user_id)
+    else:
+        deleted = True
+        cur5 = getCursor()  # delet from payment
+        cur5.execute('DELETE FROM payment WHERE member_id = %s', (member_user_id,))
+        connection.commit() 
 
-    member_userid = dbOutput1[0][0]
+        cur4 = getCursor()  # delet from attendance
+        cur4.execute('DELETE FROM attendance WHERE member_id = %s', (member_user_id,))
+        connection.commit() 
 
-    cur5 = getCursor()  # delet from payment
-    cur5.execute('DELETE FROM payment WHERE member_id = %s', (member_userid,))
-    connection.commit() 
+        cur3 = getCursor()  # delet from booking
+        cur3.execute('DELETE FROM booking WHERE member_id = %s', (member_user_id,))
+        connection.commit() 
 
-    cur4 = getCursor()  # delet from attendance
-    cur4.execute('DELETE FROM attendance WHERE member_id = %s', (member_userid,))
-    connection.commit() 
+        cur1 = getCursor()  # delete from member
+        cur1.execute('DELETE FROM member WHERE userid = %s', (member_user_id,))
+        connection.commit()
 
-    cur3 = getCursor()  # delet from booking
-    cur3.execute('DELETE FROM booking WHERE member_id = %s', (member_userid,))
-    connection.commit() 
-
-    cur = getCursor()  # delete from member
-    cur.execute('DELETE FROM member WHERE userid = %s', (member_userid,))
-    connection.commit()
-
-    cur2 = getCursor()  # delet from user
-    cur2.execute('DELETE FROM user WHERE userid = %s', (member_userid,))
-    connection.commit()
-    
-    return redirect(url_for('memberprofile'))
+        cur2 = getCursor()  # delet from user
+        cur2.execute('DELETE FROM user WHERE userid = %s', (member_user_id,))
+        connection.commit()
+        
+        cur = getCursor()
+        cur.execute("""SELECT * FROM member order by userid;""")
+        memberList=cur.fetchall()
+            
+        return render_template("admin/memberprofile.html", memberlist =  memberList,deleted =deleted,admin_userid=admin_userid,member_user_id=member_user_id)
 
 
-# c9 As manager , I want to view the most popular group classes , so that I can better understand member preferences and make informed decisions.
-@app.route("/admin/popularclass/")
-def popularclass():
-    cur = getCursor()
-   
-    sql = ("""
-        SELECT class_name, concat(t.first_name," ",t.last_name) ,SUM(book_space) as total_booked_spaces, date, time
-        FROM group_class as g
-			INNER JOIN trainer as t 
-			ON t.userid=g.userid
-        WHERE date >= %s - INTERVAL 7 DAY
-        GROUP BY class_name
-        ORDER BY total_booked_spaces DESC;
-    """)
-    parameter=(current_date,)
-    cur.execute(sql,parameter)
-    dbOutput = cur.fetchall()
-    return render_template("admin/popularclass.html", classlist=dbOutput,current_date=current_date,week_ago=week_ago)
 
 
 # c10 As a manager, I want to view financial report. So that I can know if the gym is making money.
-@app.route("/admin/financialreport/month")
+@app.route("/admin/financialreport/month/")
 def financialreport():
+    admin_userid = request.args.get('userid')
+
     cur = getCursor()  # fetch all PT payments
     sql = ("""SELECT payment_id, date, amount FROM payment where date >= DATE_SUB(NOW(), INTERVAL 1 Month) and status="paid" and type = 'personal training session';""")
     cur.execute(sql)
@@ -995,12 +1059,14 @@ def financialreport():
     for payment in dbOutput2:
         total += payment[0]
 
-    return render_template("admin/financialreport.html", payment_PT = dbOutput,payment_sub=dbOutput1, total = total,total_PT=total_PT,total_sub=total_sub)
+    return render_template("admin/financialreport.html", admin_userid=admin_userid, payment_PT = dbOutput,payment_sub=dbOutput1, total = total,total_PT=total_PT,total_sub=total_sub)
 
 
 
-@app.route("/admin/financialreport/year")
+@app.route("/admin/financialreport/year/")
 def financialreportyear():
+    admin_userid = request.args.get('userid')
+
     cur = getCursor()  # fetch all PT payments
     sql = ("""SELECT payment_id, date, amount FROM payment where date >= DATE_SUB(NOW(), INTERVAL 365 DAY) and status="paid" and type = 'personal training session';""")
     cur.execute(sql)
@@ -1025,94 +1091,8 @@ def financialreportyear():
     for payment in dbOutput2:
         total += payment[0]
 
-    return render_template("admin/financialreport.html", payment_PT = dbOutput,payment_sub=dbOutput1, total = total,total_PT=total_PT,total_sub=total_sub)
+    return render_template("admin/financialreport.html", admin_userid=admin_userid,payment_PT = dbOutput,payment_sub=dbOutput1, total = total,total_PT=total_PT,total_sub=total_sub)
 
-
-# c11 As a manager, I want to sends reminders to member when their subscription is due
-@app.route("/admin/feenotification/")
-def sendnotification():
-
-    cur = getCursor()
-    dbsql = ("""SELECT * FROM member
-                    where balance  < -20.00;""")    #fetch the member with the balance under 20
-    cur.execute(dbsql)
-    dbOutput = cur.fetchall() 
-
-    cur = getCursor()
-    sql = ('SELECT email FROM lincoln_fitness_club.member where balance<0;')
-    cur.execute(sql)
-    email = cur.fetchall()
-    
-    for memberemail in email:
-
-        email_sender = 'lincolngymgrp14@gmail.com'
-        email_password = 'cbveueimbuahdbbg'
-        email_receiver = memberemail[0]
-        subject = 'subscription fee is due'
-        body = 'Please login to our website, and pay your subscription fee. Thank you.'
-        send_noti = 'Congratulations, you had send news to all member via email.'
-
-        em = EmailMessage()
-        em['From'] = email_sender
-        em['To'] = email_receiver
-        em['Subject'] = subject
-        em.set_content(body)
-
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465 , context=context) as smtp:
-            smtp.login(email_sender, email_password)
-            smtp.sendmail(email_sender, email_receiver, em.as_string())
-    return render_template("admin/deactivate.html",member_deactive = dbOutput, send_noti=send_noti)
-
-
-# c11 As a manager, I want to sends news and updates
-import time
-from flask import Response
-
-@app.route("/admin/sendnews/", methods= ["GET","POST"])
-def sendnews():
-    if request.method =="GET":
-        return render_template("admin/sendnews.html")
-    else:
-        
-        mynews = request.form.get("mynews")
-        cur = getCursor()
-        sql = ('SELECT email FROM lincoln_fitness_club.member;')
-        cur.execute(sql)
-        email = cur.fetchall()
-
-        # Define the progress bar function
-        def generate():
-            for i, memberemail in enumerate(email):
-                email_sender = 'lincolngymgrp14@gmail.com'
-                email_password = 'cbveueimbuahdbbg'
-                email_receiver = memberemail[0]
-                print(memberemail)
-                subject = 'News from lincoln gym, something cool is happening'
-                body = mynews
-                news_pop = 'Congratulations, you had send news to all member via email.'
-
-                em = EmailMessage()
-                em['From'] = email_sender
-                em['To'] = email_receiver
-                em['Subject'] = subject
-                em.set_content(body)
-
-                context = ssl.create_default_context()
-                with smtplib.SMTP_SSL('smtp.gmail.com', 465 , context=context) as smtp:
-                    smtp.login(email_sender, email_password)
-                    smtp.sendmail(email_sender, email_receiver, em.as_string())
-
-                # Calculate the progress and yield it to the client
-                progress = int(((i+1)/len(email))*100)
-                yield f"data:{progress}\n\n"
-                time.sleep(1)
-
-            # When all emails have been sent, yield 100% progress to the client
-            yield "data:100\n\n"
-
-        # Return a response object with the progress bar generator
-        return Response(stream_with_context(generate()), mimetype="text/event-stream")
 
 
 
@@ -1120,84 +1100,81 @@ def sendnews():
 # c12 manager-- view member's attendance
 @app.route("/admin/attendance/")
 def attendance():
-    memberid = request.args.get("memberid")
+    member_user_id = request.args.get("member_user_id")
+    admin_userid = request.args.get('userid')
 
-    cur2 = getCursor()  # fetch member userid
-    sql2 =("""select userid from member where member_id = %s;""")
-    parameter2 = (memberid,)
-    cur2.execute(sql2,parameter2)
-    dbOutput2 =cur2.fetchall()
-    member_userid = dbOutput2[0][0]
-    print(member_userid)
+    # cur2 = getCursor()  # fetch member userid
+    # sql2 =("""select userid from member where member_id = %s;""")
+    # parameter2 = (member_user_id,)
+    # cur2.execute(sql2,parameter2)
+    # dbOutput2 =cur2.fetchall()
+    # member_userid = dbOutput2[0][0]
+    
 
     cur = getCursor()  #fetch specific member's attendance of gym area
     sql =("""select m.member_id, m.first_name, m.last_name, m.subscription_status, a.date, a.timein,a.timeout from member as m
              join attendance as a
              on m.userid = a.member_id where m.userid = %s;""")
-    parameter = (member_userid,)
+    parameter = (member_user_id,)
     cur.execute(sql,parameter)
     dbOutput =cur.fetchall()
 
     cur1 = getCursor()  #fetch specific member's attendance of PT, which PT booking status just be 'completed' or 'no-show'
     sql1 =("""SELECT b.session_id, CONCAT(t.first_name,' ', t.last_name), b.date, b.booking_status
-FROM booking AS b
-JOIN trainer_sessions AS ts
-ON b.session_id = ts.sessions_id
-JOIN trainer AS t
-ON ts.staff_id = t.userid  
-WHERE b.member_id = %s
-HAVING b.booking_status != 'booked'
-ORDER BY b.date DESC;""")
-    parameter1 = (member_userid,)
+            FROM booking AS b
+            JOIN trainer_sessions AS ts
+            ON b.session_id = ts.sessions_id
+            JOIN trainer AS t
+            ON ts.staff_id = t.userid  
+            WHERE b.member_id = %s
+            HAVING b.booking_status != 'booked'
+            ORDER BY b.date DESC;""")
+    parameter1 = (member_user_id,)
     cur1.execute(sql1,parameter1)
     dbOutput1 =cur1.fetchall()
     print(dbOutput)
     print(dbOutput1)
     if dbOutput or dbOutput1:
-       return render_template("admin/attendance.html",dbOutput=dbOutput,dbOutput1=dbOutput1)
+       return render_template("admin/attendance.html",dbOutput=dbOutput,dbOutput1=dbOutput1,admin_userid=admin_userid)
     else:
-        return render_template("admin/attendance.html")
+        return render_template("admin/attendance.html",admin_userid=admin_userid)
 
 # c13-1 manager --view the payments
 @app.route("/admin/viewpayment/",methods=['GET','POST'])
 def viewpayment():  
-   
-    cur = getCursor()   # fetch all the payments that the status is 'pending' (not been processed)
-    sql = ("""select * from payment where status = 'pending';""")
-    cur.execute(sql)
-    dbOutput = cur.fetchall()
+    if request.method == "GET":  # showing all 'pending'
+        admin_userid = request.args.get("userid")
+        processed = request.args.get("processed")
 
-    if dbOutput and request.method == "GET":  # showing all 'pending'
-        return render_template("admin/viewpayment.html",payment = dbOutput)
-    
-    elif dbOutput and request.method == "POST":  # change all 'pending' to 'paid'
-        processed=1
+        cur = getCursor()   # fetch all the payments that the status is 'pending' (not been processed)
+        sql = ("""select * from payment where status = 'pending';""")
+        cur.execute(sql)
+        dbOutput = cur.fetchall()
+        
+        if dbOutput:
+           return render_template("admin/viewpayment.html",payment = dbOutput,admin_userid=admin_userid)
+        else:
+           process_all = True
+           return render_template("admin/viewpayment.html",process_all=process_all,admin_userid=admin_userid)
+        
+    elif request.method == "POST":       
+                  # change all 'pending' to 'paid'
+        admin_userid=request.form.get('admin_userid')
+
+        processed = True
         cur1= getCursor()
         sql1=("""update payment set status = 'paid';""")
         cur1.execute(sql1)
         connection.commit()
-        return render_template("admin/viewpayment.html",processed=processed)
-    else:
-        process_one = 'you had processed one payment'
-        return render_template("admin/viewpayment.html",process_one=process_one)
+        return redirect(url_for('viewpayment',userid=admin_userid,processed=processed))  
 
     
 
 # c13-2 manager --process the payments
 @app.route("/admin/viewpayment/process/")
 def process():
-    userid = request.args.get("userid")
+    admin_userid = request.args.get("userid")
     paymentid = request.args.get("paymentid")
-
-
-
-   
-    
-    # cur2 = getCursor()  # update member table, balance column(current balance + payment fee)
-    # sql2 = ("""update member set balance = %s where userid = %s;""")
-    # parameters2 = ((current_balance + Decimal(payment_amount)),userid)
-    # cur2.execute(sql2,parameters2)
-    # connection.commit()
 
     cur4 = getCursor()  #update payment table, change status
     sql4 = ("""update payment set status = 'paid' where payment_id = %s;""")
@@ -1210,24 +1187,22 @@ def process():
     cur3.execute(sql3)
     dbOutput3 = cur3.fetchall()
 
-    
-
-
-
-    return render_template("admin/viewpayment.html", process_one = "processed one payment successfully!",payment = dbOutput3)
+    return render_template("admin/viewpayment.html", process_one = "processed one payment successfully!",payment = dbOutput3,admin_userid=admin_userid)
 
 # c14-1 manager--view trainer
 @app.route("/admin/viewtrainers/")
 def viewtrainers():
+    admin_userid = request.args.get("userid")
     cur = getCursor()
     sql= ("""select * from trainer;""")
     cur.execute(sql)
     dbOutput=cur.fetchall()
-    return render_template("admin/viewtrainers.html",dbOutput=dbOutput)
+    return render_template("admin/viewtrainers.html",dbOutput=dbOutput,admin_userid=admin_userid)
 # c14-2 manager--view trainer's classes
 @app.route("/admin/viewtrainers/groupclass/")
 def viewtrainers_groupclass():
     trainer_user_id = request.args.get("trainer_user_id")
+    admin_userid = request.args.get("userid")
 
     cur = getCursor()  # fetch all the group classes under this trainer from today to 7 days later
     sql=("""select g.class_name, g.date, g.time, g.book_space, g.max_space, t.userid, t.first_name, t.last_name 
@@ -1238,8 +1213,31 @@ def viewtrainers_groupclass():
     cur.execute(sql,parameters)
     dbOutput = cur.fetchall()
     
-    return render_template("admin/viewtrainers_groupclass.html", dbOutput=dbOutput,today=current_date,seven_days_later=future_date)
+    return render_template("admin/viewtrainers_groupclass.html", dbOutput=dbOutput,today=current_date,seven_days_later=future_date,trainer_user_id=trainer_user_id,admin_userid=admin_userid)
+
+#  schedule group class for new week
+@app.route("/admin/scheduling/group_class/",methods=['GET','POST'])
+def scheduling_group_class():
+    if request.method == "GET":
+       admin_userid = request.args.get("userid")
+       scheduled = request.args.get("scheduled")
+       return render_template("admin/scheduling_group_class.html",admin_userid=admin_userid,scheduled=scheduled,future_date=future_date,two_week_later=two_week_later)
+    elif request.method == "POST":
+       scheduled = True
+       admin_userid=request.form.get('admin_userid')
+       return redirect(url_for('scheduling_group_class',userid=admin_userid,scheduled=scheduled))  
+
+#  schedule pt session for new week
+@app.route("/admin/scheduling/pt_session/",methods=['GET','POST'])
+def scheduling_pt_session():
+    if request.method == "GET":
+       admin_userid = request.args.get("userid")
+       scheduled = request.args.get("scheduled")
+       return render_template("admin/scheduling_pt_session.html",admin_userid=admin_userid,scheduled=scheduled,future_date=future_date,two_week_later=two_week_later)
+    elif request.method == "POST":
+       scheduled = True
+       admin_userid=request.form.get('admin_userid')
+       return redirect(url_for('scheduling_pt_session',userid=admin_userid,scheduled=scheduled))  
 
 
-
-
+# check pt sessions in the furture

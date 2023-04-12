@@ -1,20 +1,19 @@
 {% extends "admin/admin.html" %} {% block title %}admin's home page {% endblock%}
 {% block content %}
-
-<section class="home">
-  <div class="fr">
-    <div class="content">
-      <h2>The total income during this period is ${{total}}<h2>
-        <h2>Income from subscription fee is : ${{total_sub}}</h2>
-        <h2>Income from personal training session is : ${{total_PT}}</h2>
+<h2 class="heading-1">The total income during this period is ${{total}}<h2>
+  <h2 class="heading-1">Income from subscription fee is : ${{total_sub}}</h2>
+  <h2 class="heading-1">Income from personal training session is : ${{total_PT}}</h2>
+<div class="content_container">
+     
       <!--------------------pt-->
-      <h2>PT session finacial report</h2>
+      <div>
+      <h2 class="heading-1">PT session finacial report</h2>
    
-      <table class="table table-bordered  table-striped table-hover table align-middle">
-    <thead class="table-dark align-middle">
+      <table class="primary_table table-bordered table-hover">
+    <thead>
       
       <tr>
-        <th scope="col">#</th>
+        <th scope="col"></th>
         <th scope="col">date</th>
         <th scope="col">amont</th>
       </tr>
@@ -36,14 +35,16 @@
     </tfoot>
     </tbody>
   </table>
+</div>
 <!--------------------sub-->
-  <h2>subscription finacial report</h2>
+<div>
+  <h2 class="heading-1">subscription finacial report</h2>
    
-  <table class="table table-bordered  table-striped table-hover table align-middle">
-<thead class="table-dark align-middle">
+  <table class="primary_table table-bordered table-hover">
+<thead>
   
   <tr>
-    <th scope="col">#</th>
+    <th scope="col"></th>
     <th scope="col">date</th>
     <th scope="col">amont</th>
   </tr>
@@ -65,7 +66,6 @@
 </tfoot>
 </tbody>
 </table>
-  </div>
 </div>
-</section>
+</div>
   {% endblock %}

@@ -4,7 +4,6 @@ endblock%} {% block content %}
 <table class="primary_table table-bordered table-hover">
   <thead>
     <tr>
-      <th scope="col">staff id</th>
       <th scope="col">user id</th>
       <th scope="col">Full name</th>
       <th scope="col">email</th>
@@ -19,7 +18,6 @@ endblock%} {% block content %}
   <tbody>
     {% for a in dbOutput %}
     <tr>
-      <td>{{a[0]}}</td>
       <td>{{a[1]}}</td>
       <td>{{a[2]}} {{a[3]}}</td>
       <td>{{a[4]}}</td>
@@ -29,7 +27,7 @@ endblock%} {% block content %}
       <td>{{a[8]}}</td>
       <td>
         <a
-          href="/admin/viewtrainers/groupclass/?trainer_user_id={{a[1]}}"
+          href="/admin/viewtrainers/groupclass/?userid={{admin_userid}}&trainer_user_id={{a[1]}}"
           class="btn-2 member_view_trainer_btn"
         >
           Classes

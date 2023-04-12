@@ -1,6 +1,7 @@
 .member_container {
   background-color: $color_primary;
-  height: calc(100vh - 10rem);
+  min-height: calc(100vh - 10rem);
+  padding: 3rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
