@@ -584,7 +584,7 @@ VALUES
 
 -- Inserting data into booking table
 INSERT INTO `booking` (`class_id`, `session_id`, `date`, `booking_status`, `member_id`)
-VALUES(NULL,'TS1002', '2023-03-15','booked', '1002'),
+VALUES(NULL,'TS1002', '2023-03-15','completed', '1002'),
 (NULL, 'TS1001', '2023-03-15','no-show', '1003'),
 (NULL, 'TS1005', '2023-03-16','completed', '1001'),
 (NULL, 'TS1008', '2023-03-17', 'completed', '1005'),
@@ -614,5 +614,8 @@ VALUES(NULL,'TS1002', '2023-03-15','booked', '1002'),
 ('GC1025', NULL, '2023-03-24','booked', '1001'),
 ('GC1028', NULL,  '2023-03-25','booked', '1004'),
 ('GC1030', NULL, '2023-03-25','booked', '1003'),
-('GC1035', NULL, '2023-03-26','booked', '1005')
+('GC1035', NULL, '2023-03-26','booked', '1005'),
+(NULL, 'TS1011', '2023-03-21','booked', '1002'),
+(NULL, 'TS1015', '2023-03-22','booked', '1002'),
+(NULL, 'TS1018', '2023-03-23', 'booked', '1002')
 ;

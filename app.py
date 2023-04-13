@@ -710,22 +710,24 @@ def paysubscription_success():
 def booking():
     userid = request.args.get("userid")
     cur = getCursor()  # fetch all group class this member have booked in the future
-    sql=("""select g.class_id, g.class_name, g.date, g.time from group_class as g
+    sql=("""select g.class_id, g.class_name, b.date, g.time from group_class as g
                    join booking as b on g.class_id = b.class_id
-                   where b.booking_status = 'booked' and b.member_id = %s""")
-    parameter =(userid,)
-    cur.execute(sql,parameter)
+                   where b.booking_status = 'booked' and b.member_id = %s and b.date >= %s
+                   order by b.date;""")
+    parameters =(userid,current_date)
+    cur.execute(sql,parameters)
     dbOutput = cur.fetchall()
-
+    print(dbOutput)
 
     cur2=getCursor() # fetch all the pt session this member have booked in the future
-    sql2=("""SELECT s.sessions_id , concat(t.first_name, ' ' , t.last_name),s.date, s.time 
+    sql2=("""SELECT s.sessions_id , concat(t.first_name, ' ' , t.last_name),b.date, s.time 
             from trainer_sessions as s join trainer as t
             on s.staff_id = t.userid
             join booking as b
             on s.sessions_id = b.session_id
-            where b.booking_status = 'booked' and  b.member_id = %s ;""")
-    cur2.execute(sql2,parameter)
+            where b.booking_status = 'booked' and  b.member_id = %s and b.date >= %s
+            order by b.date;""")
+    cur2.execute(sql2,parameters)
     dbOutput2 = cur2.fetchall()
 
     return render_template("member/booking.html",userid=userid,group_class=dbOutput,trainer_session=dbOutput2)
