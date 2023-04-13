@@ -1,5 +1,0 @@
-dbuser = "sqluser"
-dbpass = "password" 
-dbhost = "localhost" 
-dbport = "3306"
-dbname = "sweat_society_gym"
