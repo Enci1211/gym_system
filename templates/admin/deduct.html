@@ -10,7 +10,7 @@ endblock%} {% block content %} {% if deducted %}
 <h2>{{no_active}}</h2>
 
 <a class="btn-2" href="/admin/memberprofile/?userid={{admin_userid}}">
-  go to member page to re-active member</a
+  go to member page to edit member</a
 >
 {% else %}
 <form action="{{url_for('deduct')}}" method="POST">

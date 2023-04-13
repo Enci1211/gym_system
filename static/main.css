@@ -127,6 +127,7 @@ body {
   font-size: 1rem;
   width: -moz-max-content;
   width: max-content;
+  margin-bottom: 2rem;
   transition: all 0.5s;
 }
 .btn:hover {
@@ -137,7 +138,7 @@ body {
 .btn-2 {
   display: inline-block;
   text-decoration: none;
-  outline: transparent;
+  outline: none;
   text-align: center;
   background-color: #e3dbdb;
   color: #4e3d42;
@@ -145,6 +146,7 @@ body {
   font-size: 2rem;
   font-weight: 200;
   padding: 1rem 5rem;
+  margin: 2rem 0;
   border-radius: 100px;
   transition: all 0.2s;
 }

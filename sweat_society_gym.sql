@@ -10,15 +10,15 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema Lincoln Fitness Club
 -- -----------------------------------------------------
-DROP DATABASE IF EXISTS lincoln_fitness_club;
-CREATE SCHEMA IF NOT EXISTS lincoln_fitness_club DEFAULT CHARACTER SET latin1 ;
-USE lincoln_fitness_club ;
+DROP DATABASE IF EXISTS sweat_society_gym;
+CREATE SCHEMA IF NOT EXISTS sweat_society_gym DEFAULT CHARACTER SET latin1 ;
+USE sweat_society_gym ;
 
 
 -- -----------------------------------------------------
 -- Table `Lincoln Fitness Club`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`user` (
+CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`user` (
   `userid`  INT NOT NULL AUTO_INCREMENT,
   `password` VARCHAR(10) NOT NULL,
   `role` ENUM('admin','member','trainer') NOT NULL,
@@ -29,7 +29,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Lincoln Fitness Club`.`member`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`member` (
+CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`member` (
   `member_id`INT NOT NULL AUTO_INCREMENT,
   `userid` INT NOT NULL,
   `first_name` VARCHAR(50) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`member` (
   INDEX `userid_idx` (`userid` ASC),
   CONSTRAINT `userid`
     FOREIGN KEY (`userid`)
-    REFERENCES `lincoln_fitness_club`.`user` (`userid`)
+    REFERENCES `sweat_society_gym`.`user` (`userid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -57,7 +57,7 @@ AUTO_INCREMENT = 10001;
 -- -----------------------------------------------------
 -- Table `Lincoln Fitness Club`.`payment`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`payment` (
+CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`payment` (
   `payment_id` INT NOT NULL AUTO_INCREMENT,
   `member_id` INT NOT NULL,
   `amount` DECIMAL(10,2) NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`payment` (
   INDEX `member_id_idx` (`member_id` ASC),
   CONSTRAINT `member_id`
     FOREIGN KEY (`member_id`)
-    REFERENCES `lincoln_fitness_club`.`member` (`userid`)
+    REFERENCES `sweat_society_gym`.`member` (`userid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -79,7 +79,7 @@ AUTO_INCREMENT = 10;
 -- -----------------------------------------------------
 -- Table `Lincoln Fitness Club`.`trainer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`trainer` (
+CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`trainer` (
   `staff_id` INT NOT NULL AUTO_INCREMENT,
   `userid` INT NOT NULL,
   `first_name` VARCHAR(50) NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`trainer` (
   INDEX `userid_idx` (`userid` ASC),
   CONSTRAINT `userid_trainer`
     FOREIGN KEY (`userid`)
-    REFERENCES `lincoln_fitness_club`.`user` (`userid`)
+    REFERENCES `sweat_society_gym`.`user` (`userid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -104,7 +104,7 @@ AUTO_INCREMENT = 1001;
 -- -----------------------------------------------------
 -- Table `Lincoln Fitness Club`.`trainer_sessions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`trainer_sessions` (
+CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`trainer_sessions` (
   `sessions_id` VARCHAR(20) NOT NULL,
   `staff_id` INT NOT NULL,
   `date` DATE NOT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`trainer_sessions` (
   INDEX `staff_id_idx` (`staff_id` ASC),
   CONSTRAINT `staff_id`
     FOREIGN KEY (`staff_id`)
-    REFERENCES `lincoln_fitness_club`.`trainer` (`staff_id`)
+    REFERENCES `sweat_society_gym`.`trainer` (`staff_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `ck_sessions_id_format`
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`trainer_sessions` (
 ENGINE = InnoDB;
 
 DELIMITER $$
-CREATE TRIGGER `lincoln_fitness_club`.`trainer_sessions_BEFORE_INSERT` 
+CREATE TRIGGER `sweat_society_gym`.`trainer_sessions_BEFORE_INSERT` 
 BEFORE INSERT ON `trainer_sessions` FOR EACH ROW 
 BEGIN
   DECLARE lastId INT;
@@ -141,7 +141,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- Table `Lincoln Fitness Club`.`group_class`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`group_class` (
+CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`group_class` (
   `class_id` VARCHAR(20)  NOT NULL,
   `userid` INT NOT NULL,
   `class_name` VARCHAR(255) NOT NULL,
@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`group_class` (
   PRIMARY KEY (`class_id`),
   CONSTRAINT `trainer`
     FOREIGN KEY (`userid`)
-    REFERENCES `lincoln_fitness_club`.`trainer` (`userid`)
+    REFERENCES `sweat_society_gym`.`trainer` (`userid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `ck_class_id_format`
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`group_class` (
 ENGINE = InnoDB;
 
 DELIMITER $$
-CREATE TRIGGER `lincoln_fitness_club`.`group_class_BEFORE_INSERT` 
+CREATE TRIGGER `sweat_society_gym`.`group_class_BEFORE_INSERT` 
 BEFORE INSERT ON `group_class` FOR EACH ROW 
 BEGIN
   DECLARE lastId INT;
@@ -177,7 +177,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- Table `Lincoln Fitness Club`.`attendance`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`attendance` (
+CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`attendance` (
     `attendance_id` INT NOT NULL AUTO_INCREMENT,
     `member_id` INT NOT NULL,
     `date` DATE NOT NULL,
@@ -186,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`attendance` (
     PRIMARY KEY (`attendance_id`),
     CONSTRAINT `fk_attendance_member_id`
         FOREIGN KEY (`member_id`)
-        REFERENCES `lincoln_fitness_club`.`member`(`userid`)
+        REFERENCES `sweat_society_gym`.`member`(`userid`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION) 
 ENGINE = InnoDB
@@ -196,7 +196,7 @@ AUTO_INCREMENT = 101;
 -- -----------------------------------------------------
 -- Table `Lincoln Fitness Club`.`booking`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`booking` (
+CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`booking` (
   `booking_id` INT NOT NULL AUTO_INCREMENT,
   `class_id` VARCHAR(20) NULL,
   `session_id` VARCHAR(20) NULL,
@@ -204,9 +204,9 @@ CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`booking` (
   `booking_status` ENUM('booked', 'completed','no-show') NOT NULL,
   `member_id` INT NOT NULL,
   PRIMARY KEY (`booking_id`),
-  FOREIGN KEY (`session_id`) REFERENCES `lincoln_fitness_club`.`trainer_sessions` (`sessions_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`class_id`) REFERENCES `lincoln_fitness_club`.`group_class` (`class_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`member_id`) REFERENCES `lincoln_fitness_club`.`member` (`userid`)
+  FOREIGN KEY (`session_id`) REFERENCES `sweat_society_gym`.`trainer_sessions` (`sessions_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`class_id`) REFERENCES `sweat_society_gym`.`group_class` (`class_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`member_id`) REFERENCES `sweat_society_gym`.`member` (`userid`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION) 
     ENGINE = InnoDB;
@@ -215,8 +215,9 @@ CREATE TABLE IF NOT EXISTS `lincoln_fitness_club`.`booking` (
 -- INSERT DATA in the model
 -- -----------------------------------------------------
 
+
 -- Inserting data into user table
-INSERT INTO `lincoln_fitness_club`.`user` (`userid`,`password`, `role`) VALUES
+INSERT INTO `sweat_society_gym`.`user` (`userid`,`password`, `role`) VALUES
 (1, 'aaa000', 'admin'),
 (1001, 'aaa000', 'member'),
 (1002, 'aaa000', 'member'),
@@ -238,17 +239,17 @@ INSERT INTO `lincoln_fitness_club`.`user` (`userid`,`password`, `role`) VALUES
 
 -- Inserting data into member table
 INSERT INTO `member` (`userid`, `first_name`, `last_name`, `email`, `phone`, `address`, `date_of_birth`, `subscription_status`, `subscription_start_date`, `subscription_end_date`, `balance`) VALUES 
-(1001, 'John', 'Doe', 'johndoe@example.com', '555-1234', '123 Main St, Anytown, USA', '1990-01-01', 1, '2022-01-01', '2023-04-01', 0),
-(1002, 'Jane', 'Doe', 'janedoe@example.com', '555-5678', '456 High St, Anytown, USA', '1995-06-15', 1, '2022-01-01', '2023-04-01', -40),
-(1003, 'Bob', 'Smith', 'bobsmith@example.com', '555-9876', '789 Elm St, Anytown, USA', '1985-11-30', 0, '2022-01-01', '2023-03-15', -40),
+(1001, 'John', 'Doe', 'johndoe@example.com', '555-1234', '123 Main St, Anytown, USA', '1990-01-01', 1, '2022-01-01', '2023-03-20', 0),
+(1002, 'Jane', 'Doe', 'janedoe@example.com', '555-5678', '456 High St, Anytown, USA', '1995-06-15', 1, '2022-01-01', '2023-03-20', -40),
+(1003, 'Bob', 'Smith', 'bobsmith@example.com', '555-9876', '789 Elm St, Anytown, USA', '1985-11-30', 0, '2022-01-01', '2023-03-20', -40),
 (1004, 'Sarah', 'Johnson', 'sarahjohnson@example.com', '555-4321', '987 Oak St, Anytown, USA', '2000-04-23', 1, '2022-01-01', '2023-03-20', 0),
-(1005, 'Michael', 'Lee', 'michaellee@example.com', '555-8765', '321 Maple St, Anytown, USA', '1978-09-05', 1, '2022-01-01', '2023-03-25', -40),
-(1006, 'Emily', 'Davis', 'emilydavis@example.com', '555-2345', '234 Pine St, Anytown, USA', '1992-07-10', 1, '2022-01-01', '2023-03-25', -20),
-(1007, 'David', 'Brown', 'davidbrown@example.com', '555-6543', '567 Cedar St, Anytown, USA', '1980-03-20', 1, '2022-01-01', '2023-03-26', -20),
-(1008, 'Ava', 'Wilson', 'avawilson@example.com', '555-7890', '890 Birch St, Anytown, USA', '1997-12-12', 1, '2022-01-01', '2023-04-01', -40),
+(1005, 'Michael', 'Lee', 'michaellee@example.com', '555-8765', '321 Maple St, Anytown, USA', '1978-09-05', 1, '2022-01-01', '2023-03-20', -40),
+(1006, 'Emily', 'Davis', 'emilydavis@example.com', '555-2345', '234 Pine St, Anytown, USA', '1992-07-10', 1, '2022-01-01', '2023-03-20', -20),
+(1007, 'David', 'Brown', 'davidbrown@example.com', '555-6543', '567 Cedar St, Anytown, USA', '1980-03-20', 1, '2022-01-01', '2023-03-20', -20),
+(1008, 'Ava', 'Wilson', 'avawilson@example.com', '555-7890', '890 Birch St, Anytown, USA', '1997-12-12', 1, '2022-01-01', '2023-03-20', -40),
 (1009, 'Oliver', 'Taylor', 'olivertaylor@example.com', '555-3456', '345 Oak St, Anytown, USA', '1975-04-09', 1, '2022-01-01', '2023-03-20', -20),
-(1010, 'Emma', 'Anderson', 'emmaanderson@example.com', '555-9012', '678 Cedar St, Anytown, USA', '1999-10-28', 1, '2022-01-01', '2023-03-01', 0),
-(1011, 'William', 'Martin', 'williammartin@example.com', '555-6789', '901 Pine St, Anytown, USA', '1994-02-14', 1, '2022-01-01','2023-03-18', 0);
+(1010, 'Emma', 'Anderson', 'emmaanderson@example.com', '555-9012', '678 Cedar St, Anytown, USA', '1999-10-28', 1, '2022-01-01', '2023-03-20', 0),
+(1011, 'William', 'Martin', 'williammartin@example.com', '555-6789', '901 Pine St, Anytown, USA', '1994-02-14', 1, '2022-01-01','2023-03-20', 0);
 
  
 -- Inserting data into payment table
@@ -273,7 +274,7 @@ VALUES
 (1003, 20.0, '2023-03-06', '11:00:00', 'personal training session', 'paid');
 
 -- Inserting data into trainer table
-INSERT INTO `lincoln_fitness_club`.`trainer`
+INSERT INTO `sweat_society_gym`.`trainer`
 (`userid`, `first_name`, `last_name`, `email`, `phone`, `address`, `date_of_birth`, `specialties`)
 VALUES
 (2001, 'John', 'Doe', 'john.doe@gmail.com', '555-1234', '123 Main St', '1985-01-01', 'Weightlifting'),
@@ -289,43 +290,43 @@ INSERT INTO `trainer_sessions` (`staff_id`, `date`, `fee`, `time`, `session_stat
 VALUES 
 (2001, '2023-03-15', 50.00, '09:00:00', 'available'),
 (2001, '2023-03-15', 50.00, '10:00:00', 'booked'),
-(2001, '2023-03-15', 50.00, '11:00:00', 'available'),
-(2002, '2023-03-16', 60.00, '12:00:00', 'available'),
-(2002, '2023-03-16', 60.00, '13:00:00', 'available'),
-(2002, '2023-03-16', 60.00, '14:00:00', 'available'),
-(2003, '2023-03-17', 40.00, '15:00:00', 'available'),
-(2003, '2023-03-17', 40.00, '16:00:00', 'available'),
-(2003, '2023-03-17', 40.00, '17:00:00', 'available'),
-(2004, '2023-03-18', 70.00, '18:00:00', 'available'),
-(2004, '2023-03-18', 70.00, '19:00:00', 'available'),
-(2004, '2023-03-18', 70.00, '20:00:00', 'available'),
-(2005, '2023-03-19', 80.00, '10:00:00', 'available'),
-(2005, '2023-03-19', 80.00, '11:00:00', 'available'),
-(2005, '2023-03-19', 80.00, '12:00:00', 'available'),
-(2001, '2023-03-20', 50.00, '09:00:00', 'available'),
-(2001, '2023-03-20', 50.00, '10:00:00', 'available'),
+(2001, '2023-03-15', 50.00, '11:00:00', 'booked'),
+(2002, '2023-03-16', 60.00, '12:00:00', 'booked'),
+(2002, '2023-03-16', 60.00, '13:00:00', 'booked'),
+(2002, '2023-03-16', 60.00, '14:00:00', 'booked'),
+(2003, '2023-03-17', 40.00, '15:00:00', 'booked'),
+(2003, '2023-03-17', 40.00, '16:00:00', 'booked'),
+(2003, '2023-03-17', 40.00, '17:00:00', 'booked'),
+(2004, '2023-03-18', 70.00, '18:00:00', 'booked'),
+(2004, '2023-03-18', 70.00, '19:00:00', 'booked'),
+(2004, '2023-03-18', 70.00, '20:00:00', 'booked'),
+(2005, '2023-03-19', 80.00, '10:00:00', 'booked'),
+(2005, '2023-03-19', 80.00, '11:00:00', 'booked'),
+(2005, '2023-03-19', 80.00, '12:00:00', 'booked'),
+(2001, '2023-03-20', 50.00, '09:00:00', 'booked'),
+(2001, '2023-03-20', 50.00, '10:00:00', 'booked'),
 (2001, '2023-03-20', 50.00, '11:00:00', 'available'),
-(2002, '2023-03-21', 60.00, '12:00:00', 'available'),
-(2002, '2023-03-21', 60.00, '13:00:00', 'available'),
+(2002, '2023-03-21', 60.00, '12:00:00', 'booked'),
+(2002, '2023-03-21', 60.00, '13:00:00', 'booked'),
 (2002, '2023-03-21', 60.00, '14:00:00', 'available'),
-(2003, '2023-03-22', 40.00, '15:00:00', 'available'),
+(2003, '2023-03-22', 40.00, '15:00:00', 'booked'),
 (2003, '2023-03-22', 40.00, '16:00:00', 'available'),
 (2003, '2023-03-22', 40.00, '17:00:00', 'available'),
-(2004, '2023-03-23', 70.00, '18:00:00', 'available'),
-(2004, '2023-03-23', 70.00, '19:00:00', 'available'),
+(2004, '2023-03-23', 70.00, '18:00:00', 'booked'),
+(2004, '2023-03-23', 70.00, '19:00:00', 'booked'),
 (2004, '2023-03-23', 70.00, '20:00:00', 'available'),
-(2005, '2023-03-24', 80.00, '10:00:00', 'available'),
-(2005, '2023-03-24', 80.00, '11:00:00', 'available'),
+(2005, '2023-03-24', 80.00, '10:00:00', 'booked'),
+(2005, '2023-03-24', 80.00, '11:00:00', 'booked'),
 (2005, '2023-03-24', 80.00, '12:00:00', 'available'),
-(2001, '2023-03-27', 50.00, '14:00:00', 'available'),
-(2001, '2023-03-27', 50.00, '15:00:00', 'available'),
-(2001, '2023-03-27', 50.00, '16:00:00', 'available'),
-(2002, '2023-03-28', 60.00, '14:00:00', 'available'),
-(2002, '2023-03-28', 60.00, '15:00:00', 'available'),
-(2002, '2023-03-28', 60.00, '16:00:00', 'available'),
-(2003, '2023-03-29', 40.00, '14:00:00', 'available'),
-(2003, '2023-03-29', 40.00, '15:00:00', 'available'),
-(2003, '2023-03-29', 40.00, '16:00:00', 'available'),
+(2001, '2023-03-25', 50.00, '14:00:00', 'booked'),
+(2001, '2023-03-25', 50.00, '15:00:00', 'available'),
+(2001, '2023-03-25', 50.00, '16:00:00', 'available'),
+(2002, '2023-03-26', 60.00, '14:00:00', 'booked'),
+(2002, '2023-03-26', 60.00, '15:00:00', 'available'),
+(2002, '2023-03-26', 60.00, '16:00:00', 'available'),
+(2003, '2023-03-26', 40.00, '14:00:00', 'booked'),
+(2003, '2023-03-26', 40.00, '15:00:00', 'available'),
+(2003, '2023-03-26', 40.00, '16:00:00', 'available'),
 (2004, '2023-03-30', 70.00, '14:00:00', 'available'),
 (2004, '2023-03-30', 70.00, '15:00:00', 'available'),
 (2004, '2023-03-30', 70.00, '16:00:00', 'available'),
@@ -417,41 +418,41 @@ INSERT INTO `group_class` (`userid`, `class_name`, `date`, `time`, `book_space`,
 (2003, 'Zumba', '2023-03-19', '11:00:00', 21, 30),
 (2004, 'Spinning', '2023-03-19', '12:00:00', 18, 30),
 (2005, 'Kickboxing', '2023-03-19', '13:00:00', 15, 30),
-(2001, 'Yoga', '2023-03-20', '09:00:00', 0, 30),
-(2002, 'Pilates', '2023-03-20', '10:00:00', 0, 30),
-(2003, 'Zumba', '2023-03-20', '11:00:00', 0, 30),
-(2004, 'Spinning', '2023-03-20', '12:00:00', 0, 30),
-(2005, 'Kickboxing', '2023-03-20', '13:00:00', 0, 30),
-(2001, 'Yoga', '2023-03-21', '09:00:00', 0, 30),
-(2002, 'Pilates', '2023-03-21', '10:00:00', 0, 30),
-(2003, 'Zumba', '2023-03-21', '11:00:00', 0, 30),
-(2004, 'Spinning', '2023-03-21', '12:00:00', 0, 30),
-(2005, 'Kickboxing', '2023-03-21', '13:00:00', 0, 30),
-(2001, 'Yoga', '2023-03-22', '09:00:00', 0, 30),
-(2002, 'Pilates', '2023-03-22', '10:00:00', 0, 30),
-(2003, 'Zumba', '2023-03-22', '11:00:00', 0, 30),
-(2004, 'Spinning', '2023-03-22', '12:00:00', 0, 30),
-(2005, 'Kickboxing', '2023-03-22', '13:00:00', 0, 30),
-(2001, 'Yoga', '2023-03-23', '09:00:00', 0, 30),
-(2002, 'Pilates', '2023-03-23', '10:00:00', 0, 30),
-(2003, 'Zumba', '2023-03-23', '11:00:00', 0, 30),
-(2004, 'Spinning', '2023-03-23', '12:00:00', 0, 30),
-(2005, 'Kickboxing', '2023-03-23', '13:00:00', 0, 30),
-(2001, 'Yoga', '2023-03-24', '09:00:00', 0, 30),
-(2002, 'Pilates', '2023-03-24', '10:00:00', 0, 30),
-(2003, 'Zumba', '2023-03-24', '11:00:00', 0, 30),
-(2004, 'Spinning', '2023-03-24', '12:00:00', 0, 30),
-(2005, 'Kickboxing', '2023-03-24', '13:00:00', 0, 30),
-(2001, 'Yoga', '2023-03-25', '09:00:00', 0, 30),
-(2002, 'Pilates', '2023-03-25', '10:00:00', 0, 30),
-(2003, 'Zumba', '2023-03-25', '11:00:00', 0, 30),
-(2004, 'Spinning', '2023-03-25', '12:00:00', 0, 30),
-(2005, 'Kickboxing', '2023-03-25', '13:00:00', 0, 30),
-(2001, 'Yoga', '2023-03-26', '09:00:00', 0, 30),
-(2002, 'Pilates', '2023-03-26', '10:00:00', 0, 30),
-(2003, 'Zumba', '2023-03-26', '11:00:00', 0, 30),
-(2004, 'Spinning', '2023-03-26', '12:00:00', 0, 30),
-(2005, 'Kickboxing', '2023-03-26', '13:00:00', 0, 30),
+(2001, 'Yoga', '2023-03-20', '09:00:00', 29, 30),
+(2002, 'Pilates', '2023-03-20', '10:00:00', 18, 30),
+(2003, 'Zumba', '2023-03-20', '11:00:00', 15, 30),
+(2004, 'Spinning', '2023-03-20', '12:00:00', 15, 30),
+(2005, 'Kickboxing', '2023-03-20', '13:00:00', 19, 30),
+(2001, 'Yoga', '2023-03-21', '09:00:00', 23, 30),
+(2002, 'Pilates', '2023-03-21', '10:00:00', 25, 30),
+(2003, 'Zumba', '2023-03-21', '11:00:00', 25, 30),
+(2004, 'Spinning', '2023-03-21', '12:00:00', 30, 30),
+(2005, 'Kickboxing', '2023-03-21', '13:00:00', 21, 30),
+(2001, 'Yoga', '2023-03-22', '09:00:00', 18, 30),
+(2002, 'Pilates', '2023-03-22', '10:00:00', 10, 30),
+(2003, 'Zumba', '2023-03-22', '11:00:00', 30, 30),
+(2004, 'Spinning', '2023-03-22', '12:00:00', 16, 30),
+(2005, 'Kickboxing', '2023-03-22', '13:00:00', 18, 30),
+(2001, 'Yoga', '2023-03-23', '09:00:00', 20, 30),
+(2002, 'Pilates', '2023-03-23', '10:00:00', 19, 30),
+(2003, 'Zumba', '2023-03-23', '11:00:00', 30, 30),
+(2004, 'Spinning', '2023-03-23', '12:00:00', 28, 30),
+(2005, 'Kickboxing', '2023-03-23', '13:00:00', 19, 30),
+(2001, 'Yoga', '2023-03-24', '09:00:00', 22, 30),
+(2002, 'Pilates', '2023-03-24', '10:00:00', 23, 30),
+(2003, 'Zumba', '2023-03-24', '11:00:00', 21, 30),
+(2004, 'Spinning', '2023-03-24', '12:00:00', 19, 30),
+(2005, 'Kickboxing', '2023-03-24', '13:00:00', 17, 30),
+(2001, 'Yoga', '2023-03-25', '09:00:00', 16, 30),
+(2002, 'Pilates', '2023-03-25', '10:00:00', 20, 30),
+(2003, 'Zumba', '2023-03-25', '11:00:00', 21, 30),
+(2004, 'Spinning', '2023-03-25', '12:00:00', 10, 30),
+(2005, 'Kickboxing', '2023-03-25', '13:00:00', 28, 30),
+(2001, 'Yoga', '2023-03-26', '09:00:00', 25, 30),
+(2002, 'Pilates', '2023-03-26', '10:00:00', 22, 30),
+(2003, 'Zumba', '2023-03-26', '11:00:00', 23, 30),
+(2004, 'Spinning', '2023-03-26', '12:00:00', 21, 30),
+(2005, 'Kickboxing', '2023-03-26', '13:00:00', 19, 30),
 (2001, 'Yoga', '2023-03-27', '09:00:00', 0, 30),
 (2002, 'Pilates', '2023-03-27', '10:00:00', 0, 30),
 (2003, 'Zumba', '2023-03-27', '11:00:00', 0, 30),
@@ -613,4 +614,5 @@ VALUES(NULL,'TS1002', '2023-03-15','booked', '1002'),
 ('GC1025', NULL, '2023-03-24','booked', '1001'),
 ('GC1028', NULL,  '2023-03-25','booked', '1004'),
 ('GC1030', NULL, '2023-03-25','booked', '1003'),
-('GC1035', NULL, '2023-03-26','booked', '1005');
+('GC1035', NULL, '2023-03-26','booked', '1005')
+;

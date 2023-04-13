@@ -185,7 +185,57 @@ def admin():
     userid = request.args.get("userid")    
     return render_template("admin/admin.html",admin_userid = userid)
 
-
+# register
+@app.route("/register",methods = ['POST','GET'])
+def register():
+    if request.method == "POST": 
+            # Get the form data
+        first_name_new = request.form.get('first_name')
+        last_name_new = request.form.get('last_name')
+        email_new = request.form.get('email')
+        phone_new = request.form.get('phone')
+        address_new = request.form.get('address')
+        date_of_birth_new= request.form.get('date_of_birth') 
+        
+            # Check if the email address is already in use
+        cur = getCursor()
+        cur.execute("SELECT email FROM member WHERE email = %s", (email_new,))
+        dbOutput = cur.fetchall()
+        if dbOutput:
+            exist_email = True
+            return redirect(url_for('register',exist_email=exist_email))
+        
+            # Validate phone number
+        elif not phone_new.isdigit():
+            wrong_phone = True
+            return redirect(url_for('register',wrong_phone=wrong_phone))
+                
+            # validate age
+        else:
+            age_18 = current_date - timedelta(days=18*365)
+            dob = datetime.datetime.strptime(date_of_birth_new, '%Y-%m-%d').date()
+            if dob > age_18:
+                adult_not = True
+                return redirect(url_for('register',adult_not=adult_not))   
+            else:  
+                new_member=True
+                cur = getCursor()
+                cur.execute("INSERT INTO user (password,role) VALUES ('aaa000','member')")
+                userid = cur.lastrowid
+                # Insert a new member with the user_id
+                cur.execute('''
+                        INSERT INTO member (userid, first_name, last_name, email, phone, address, date_of_birth,subscription_status,subscription_start_date,subscription_end_date,balance)
+                        VALUES(%s,%s,%s,%s,%s,%s,%s,1,%s,%s,0.00)''',
+                        (userid, first_name_new, last_name_new, email_new, phone_new, address_new, date_of_birth_new,current_date_str,future_date_str))
+    
+                # Commit the transaction and redirect to member profile
+                connection.commit()
+                return render_template("main/home.html",new_member=new_member)
+    if request.method == 'GET':
+       exist_email = request.args.get('exist_email')
+       wrong_phone = request.args.get('wrong_phone')
+       adult_not = request.args.get('adult_not')
+       return render_template("main/register.html",exist_email=exist_email,wrong_phone=wrong_phone,adult_not=adult_not)
 
 # gym system for trainer------------------------------------------------------------------
 # a1 trainer-view own profile
@@ -259,9 +309,10 @@ def traineeprofile():
                 on ts.sessions_id = b.session_id
 		        JOIN member as m
                     on b.member_id = m.userid
-            Where ts.session_status = "booked"
+            Where ts.session_status = "booked" and b.date >= %s
             Order by b.date, ts.time; """)    #fetch all the members' info
-    cur.execute(dbsql)
+    parameter=(current_date,)
+    cur.execute(dbsql,parameter)
     dbOutput = cur.fetchall()
     return render_template("trainer/trainee.html", member = dbOutput , userid = userid)
 
@@ -927,7 +978,7 @@ def deduct():
         try:
             current_sub_end_date = dbOutput[0][0]
         except IndexError:
-            no_active='whoops, there are no active member now...'
+            no_active='There are no active members with balance under $-20 now :)'
             return render_template("admin/deduct.html", no_active=no_active, dbOutput=dbOutput,admin_userid=admin_userid)  
         return render_template("admin/deduct.html",current_sub_end_date=current_sub_end_date,admin_userid=admin_userid,deducted =deducted,seven_days_after = future_date)
            
@@ -1214,6 +1265,20 @@ def viewtrainers_groupclass():
     dbOutput = cur.fetchall()
     
     return render_template("admin/viewtrainers_groupclass.html", dbOutput=dbOutput,today=current_date,seven_days_later=future_date,trainer_user_id=trainer_user_id,admin_userid=admin_userid)
+
+# manager--view trainer's PT session
+@app.route("/admin/viewtrainers/pt_session/")
+def viewtrainers_pt_session():
+    trainer_user_id = request.args.get("trainer_user_id")
+    admin_userid = request.args.get("userid")
+    # fetch all pt sessions under this trainer
+    cur=getCursor()
+    sql = ("""SELECT * FROM trainer_sessions WHERE staff_id=%s and date > %s and date < %s;""")
+    parameter=(trainer_user_id,current_date, future_date)
+    cur.execute(sql,parameter)
+    dbOutput = cur.fetchall()
+
+    return render_template("admin/viewtrainers_pt_session.html", dbOutput=dbOutput,today=current_date,seven_days_later=future_date,trainer_user_id=trainer_user_id,admin_userid=admin_userid)
 
 #  schedule group class for new week
 @app.route("/admin/scheduling/group_class/",methods=['GET','POST'])

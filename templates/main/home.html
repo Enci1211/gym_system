@@ -40,6 +40,11 @@
   <body>
     <div class="login_container">
       <section class="login">
+        {% if new_member %}
+        <h2 class="heading_2">
+          Succesfully registered! Please log in with your email
+        </h2>
+        {% endif %}
         <h2 class="message_2">{{ not_user }}</h2>
         <h2 class="message_2">{{ incorrect_password }}</h2>
 
@@ -62,6 +67,7 @@
           />
 
           <button type="submit" class="btn login_btn">Log in</button>
+          <a href="/register" class="btn login_btn">Register</a>
         </form>
       </section>
     </div>

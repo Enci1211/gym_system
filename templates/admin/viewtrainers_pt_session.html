@@ -1,20 +1,17 @@
 {% extends "admin/admin.html" %} {% block title %} Trainer's class page {%
-endblock%} {% block content %}
-
-<h2 class="heading-2">all the group classes under this Instructor</h2>
+endblock%} {% block content %} {% if dbOutput %}
+<h2 class="heading-2">All the PT sessions under this trainer</h2>
 
 <h2 class="heading-2">from {{today}} to {{seven_days_later}}</h2>
 <input type="hidden" name="admin_userid" value="{{admin_userid}}" />
 <table class="primary_table table-bordered table-hover">
   <thead>
     <tr>
-      <th scope="col">class name</th>
+      <th scope="col">session ID</th>
       <th scope="col">date</th>
       <th scope="col">time</th>
-      <th scope="col">booked spots</th>
-      <th scope="col">max spots</th>
-      <th scope="col">ID</th>
-      <th scope="col">Instructor</th>
+      <th scope="col">fee</th>
+      <th scope="col">session_status</th>
     </tr>
   </thead>
 
@@ -22,12 +19,10 @@ endblock%} {% block content %}
     {% for a in dbOutput %}
     <tr>
       <td>{{a[0]}}</td>
-      <td>{{a[1]}}</td>
       <td>{{a[2]}}</td>
-      <td>{{a[3]}}</td>
       <td>{{a[4]}}</td>
+      <td>{{a[3]}}</td>
       <td>{{a[5]}}</td>
-      <td>{{a[6]}} {{a[7]}}</td>
     </tr>
     {% endfor %}
   </tbody>
@@ -37,5 +32,11 @@ endblock%} {% block content %}
   class="btn-2"
   >Back</a
 >
-
-{% endblock %}
+{% else %}
+<h2>There are no PT sessions under this trainer this week!</h2>
+<a
+  href="/admin/viewtrainers/?userid={{admin_userid}}&trainer_user_id={{trainer_user_id}}"
+  class="btn-2"
+  >Back</a
+>
+{% endif %} {% endblock %}
