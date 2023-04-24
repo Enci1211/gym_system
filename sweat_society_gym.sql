@@ -8,7 +8,7 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema Lincoln Fitness Club
+-- Schema sweat_society_gym`
 -- -----------------------------------------------------
 DROP DATABASE IF EXISTS sweat_society_gym;
 CREATE SCHEMA IF NOT EXISTS sweat_society_gym DEFAULT CHARACTER SET latin1 ;
@@ -16,7 +16,7 @@ USE sweat_society_gym ;
 
 
 -- -----------------------------------------------------
--- Table `Lincoln Fitness Club`.`user`
+-- Table `sweat_society_gym``.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`user` (
   `userid`  INT NOT NULL AUTO_INCREMENT,
@@ -27,7 +27,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Lincoln Fitness Club`.`member`
+-- Table `sweat_society_gym``.`member`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`member` (
   `member_id`INT NOT NULL AUTO_INCREMENT,
@@ -55,7 +55,7 @@ AUTO_INCREMENT = 10001;
 
 
 -- -----------------------------------------------------
--- Table `Lincoln Fitness Club`.`payment`
+-- Table `sweat_society_gym`.`payment`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`payment` (
   `payment_id` INT NOT NULL AUTO_INCREMENT,
@@ -77,7 +77,7 @@ AUTO_INCREMENT = 10;
 
 
 -- -----------------------------------------------------
--- Table `Lincoln Fitness Club`.`trainer`
+-- Table `sweat_society_gym``.`trainer`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`trainer` (
   `staff_id` INT NOT NULL AUTO_INCREMENT,
@@ -102,7 +102,7 @@ AUTO_INCREMENT = 1001;
 
 
 -- -----------------------------------------------------
--- Table `Lincoln Fitness Club`.`trainer_sessions`
+-- Table `sweat_society_gym``.`trainer_sessions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`trainer_sessions` (
   `sessions_id` VARCHAR(20) NOT NULL,
@@ -139,7 +139,7 @@ DELIMITER ;
 
 
 -- -----------------------------------------------------
--- Table `Lincoln Fitness Club`.`group_class`
+-- Table `sweat_society_gym``.`group_class`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`group_class` (
   `class_id` VARCHAR(20)  NOT NULL,
@@ -175,7 +175,7 @@ DELIMITER ;
 
 
 -- -----------------------------------------------------
--- Table `Lincoln Fitness Club`.`attendance`
+-- Table `sweat_society_gym``.`attendance`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`attendance` (
     `attendance_id` INT NOT NULL AUTO_INCREMENT,
@@ -194,7 +194,7 @@ AUTO_INCREMENT = 101;
 
 
 -- -----------------------------------------------------
--- Table `Lincoln Fitness Club`.`booking`
+-- Table `sweat_society_gym``.`booking`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sweat_society_gym`.`booking` (
   `booking_id` INT NOT NULL AUTO_INCREMENT,

@@ -635,7 +635,7 @@ def groupclass_book():
 
                 cur2=getCursor() # update the booking table with this new booking data
                 sql2=("""INSERT INTO booking (class_id, date, booking_status,member_id) VALUES (%s, %s,'booked', %s);""")
-                parameters2=(classid,current_date,userid)
+                parameters2=(classid,class_date,userid)
                 cur2.execute(sql2,parameters2)
                 connection.commit()
             
